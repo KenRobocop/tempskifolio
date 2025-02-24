@@ -115,7 +115,7 @@ const EmployerProfile = () => {
                     jobs.map((job) => (
                         <div
                             key={job.id}
-                            style={{ border: '1px solid #ccc', padding: '15px', margin: '15px 0' }}
+                            style={{ border: '1px solid #ccc', padding: '15px', margin: '15px 0', backgroundColor: "#a6faf6" }}
                             onClick={() => handleJobClick(job)}
                         >
                             <h4>{job.title}</h4>

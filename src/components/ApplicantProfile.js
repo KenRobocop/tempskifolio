@@ -194,7 +194,7 @@ const ApplicantProfile = () => {
                         <span
                             key={skill}
                             style={{
-                                backgroundColor: '#4CAF50',
+                                backgroundColor: '#007bff',
                                 color: 'white',
                                 padding: '5px 10px',
                                 borderRadius: '5px',

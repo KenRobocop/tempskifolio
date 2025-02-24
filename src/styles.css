@@ -36,16 +36,18 @@ input, textarea {
 }
 
 button {
-    background: #28a745;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s, color 0.3s;
 }
 
 button:hover {
-    background: #ffffff;
+  background: #3d8de2;
+  color: #fff;
 }
 /* App.css */
 #job-posting-container {
@@ -911,4 +913,38 @@ footer.show .admin-btn {
   }
 }
 
+/* css for job post exclamation */
 
+.tooltip-exclamation {
+  color: #d9534f;
+  font-weight: bold;
+  font-size: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 420px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  padding: 10px;
+  border-radius: 5px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateX(-10px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: normal;
+  z-index: 1;
+}
+
+.tooltip-exclamation:hover + .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
