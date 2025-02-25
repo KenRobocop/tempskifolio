@@ -116,6 +116,7 @@ const JobSearch = () => {
             };
 
     return (
+        /**START OF CHANGING THE SEARCH JOB PAGE */
         <div style={{ position: "relative" }}>
             <div
                 id="job-search-container"
@@ -151,6 +152,7 @@ const JobSearch = () => {
                                 style={{
                                     border: "1px solid #ddd",
                                     borderRadius: "8px",
+                                    boxShadow: "0 0 10px black",
                                     padding: "10px",
                                     width: "200px",
                                     cursor: "pointer",
@@ -175,6 +177,7 @@ const JobSearch = () => {
                                 style={{
                                     border: "1px solid #ddd",
                                     borderRadius: "8px",
+                                    boxShadow: "0 0 10px black",
                                     padding: "10px",
                                     width: "200px",
                                     cursor: "pointer",
@@ -189,7 +192,9 @@ const JobSearch = () => {
                         ))}
                     </div>
                 </div>
+                {/**END OF CHANGING THE SEARCH JOB PAGE */}
             </div>
+            
 
             {expandedJob && (
                 <div

@@ -34,7 +34,7 @@ input, textarea {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-
+/** START OF CHANGED BUTTON CSS*/
 button {
   background: #007bff;
   color: #fff;
@@ -49,6 +49,9 @@ button:hover {
   background: #3d8de2;
   color: #fff;
 }
+
+/** END OF CHANGED BUTTON CSS*/
+
 /* App.css */
 #job-posting-container {
     margin-top: 20px;
@@ -130,6 +133,8 @@ img{
     box-shadow:0 0 1cap #ffffff;
     color: black;
 } */
+
+/** START OF CHANGED ROLES BUTTON CSS*/
 .Roles button {
     width: 80%;
     position: relative;
@@ -212,6 +217,8 @@ img{
       transform: translate3d(0, 0, 0) translateZ(0);
     }
   }
+
+/** END OF CHANGED ROLES BUTTON CSS*/
   
   .Roles {
     /* border: 1px solid; */
@@ -531,7 +538,7 @@ nav a {
     width: 50vw;
     position: relative; /* Allows child elements to be positioned absolutely */
 }
-  
+/** START OF CHANGED HERO CSS*/
 .hero {
   padding: 60px 20px;
   width: 100vw; /* Full viewport width */
@@ -546,6 +553,9 @@ nav a {
   .hero h1, .hero p {
     text-align: center; /* Centers the text inside the h1 and p elements */
 }
+
+/** END OF CHANGED HERO CSS*/
+
   .form {
     display: flex;
     flex-direction: column;
@@ -607,6 +617,9 @@ nav a {
   }
 
 /* General Navbar Styles */
+
+/** START OF CHANGED NAVBAR CSS*/
+
 .custom-navbar {
     background: linear-gradient(90deg, #3387ad, #30918c);
     padding: 0.3rem 1rem;
@@ -643,6 +656,9 @@ nav a {
     padding: 0; /* Remove padding for a cleaner look */
     cursor: pointer;
   }
+
+  /** END OF CHANGED NAVBAR CSS*/
+
   
   .burger-icon {
     display: flex;
@@ -706,6 +722,9 @@ nav a {
 #portfolio{
     margin-top: 25px;
 }
+
+/** START OF CHANGED PROFILE CSS*/
+
 #profilePicInput{
     border-color: #28a745;
 }
@@ -734,6 +753,9 @@ nav a {
   box-shadow: 0 0 10px black;
 
 }
+
+/** END OF CHANGED PROFILE CSS*/
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -754,6 +776,9 @@ nav a {
     width: 400px;
     text-align: center;
 }
+
+/** START OF CHANGED SUBMISSIONS CSS*/
+
 
 .submissions-container {
     display: flex;
@@ -787,6 +812,9 @@ nav a {
 .demo-link:hover {
     text-decoration: underline;
 }
+
+/** END OF CHANGED SUBMISSIONS CSS*/
+
 /* #admin{
   margin-top: 20px;
   position: absolute;
@@ -850,7 +878,7 @@ footer.show .admin-btn {
   overflow-y: auto;
 }
 
-/* BURGER MENU STYLES
+/* START OF NEW BURGER MENU STYLES
 
 /* Navbar Styling */
 .custom-navbar {
@@ -913,7 +941,9 @@ footer.show .admin-btn {
   }
 }
 
-/* css for job post exclamation */
+/* END OF NEW BURGER MENU STYLES
+
+/* START OF CHANGED EXCLAMATION POINT JOB POST CSS */
 
 .tooltip-exclamation {
   color: #d9534f;
@@ -948,3 +978,6 @@ footer.show .admin-btn {
   visibility: visible;
   opacity: 1;
 }
+
+
+/* END OF CHANGED EXCLAMATION POINT JOB POST CSS */

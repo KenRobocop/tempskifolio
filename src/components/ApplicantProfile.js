@@ -242,7 +242,7 @@ const ApplicantProfile = () => {
 
            
 
-            {/* Add Certificate Section */}
+            {/* Add Certificate Section, START THERE'S CHANGES IN HERE - hans <3 ;) */}
             <div style={{ marginTop: '20px' }} id='certificate'>
                 <h4>Add a New Certificate</h4>
                 <select
@@ -277,6 +277,7 @@ const ApplicantProfile = () => {
                     onChange={(e) => handleFileChange(e, 'certificate')}
                 />
             </div>
+            {/* Add Certificate Section, END THERE'S CHANGES IN HERE - hans <3 ;) */}
 
             {/* Certifications Display by Category */}
             <div style={{ marginTop: '30px' }} id='certificateTable'>

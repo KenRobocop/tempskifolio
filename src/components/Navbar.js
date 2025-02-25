@@ -118,7 +118,7 @@
 
 // export default Navbar;
 
-// TRY BURGER MENU STYLE NAVBAR
+// START OF NEW BURGER MENU STYLE NAVBAR
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -218,3 +218,5 @@ const Navbar = ({ userType, onLogout }) => {
 };
 
 export default Navbar;
+
+// END OF CHANGING THE BURGER MENU

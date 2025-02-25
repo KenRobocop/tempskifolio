@@ -33,6 +33,8 @@ const EmployerJobPost = () => {
         setAverageScore(Math.max(0, Math.min(100, value))); // Clamp between 0 and 100
     };
 
+    {/* START OF CHANGES IN EMPLOYER JOB POSTS*/}
+
     const styles = {
         formContainer: {
             display: 'flex',
@@ -72,6 +74,8 @@ const EmployerJobPost = () => {
             boxShadow: 'none' // Removes default button shadow
         }
     };
+
+    {/* END OF CHANGES IN EMPLOYER JOB POSTS*/}
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -161,7 +165,7 @@ const EmployerJobPost = () => {
                 </button>
             </form>
 
-            {/* Explanation Section */}
+            {/* START of changed Explanation Section START OF EXCLAMATION HOVER*/}
             <div style={{ marginTop: '20px', padding: '10px', background: '#f9f9f9', border: '1px solid #ddd', borderRadius: '5px', position: 'relative' }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', position: 'relative' }}>
                 <span className="tooltip-exclamation">!</span>
@@ -175,6 +179,7 @@ const EmployerJobPost = () => {
                 <strong style={{ marginLeft: '10px' }}>How the System Evaluates the Average Score:</strong>
             </div>
         </div>
+            {/* END of changed Explanation Section START OF EXCLAMATION HOVER*/}
         </div>
     );
 };

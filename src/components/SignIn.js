@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
@@ -8,40 +8,48 @@ import { signOut } from 'firebase/auth';
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-    const navigate = useNavigate(); // For navigation post-sign-in
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     const handleSignIn = async (e) => {
         e.preventDefault();
         try {
-            // Sign in with email and password
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // Fetch user data from Firestore to check approval status
             const applicantDoc = await getDoc(doc(db, 'applicants', user.uid));
             const employerDoc = await getDoc(doc(db, 'employers', user.uid));
             const userDocToBeApproved = await getDoc(doc(db, 'userAccountsToBeApproved', user.uid));
 
-            // Check if the user is in the 'userAccountsToBeApproved' collection (pending approval)
             if (userDocToBeApproved.exists()) {
                 alert('Your account is pending approval. Please wait for admin approval.');
-                await signOut(auth); // Log out the user
-                navigate('/'); // Redirect to homepage
+                await signOut(auth);
+                navigate('/');
                 return;
             }
 
             if (applicantDoc.exists()) {
-                // Redirect to applicant profile if user is found in applicants collection
                 navigate('/applicant/profile');
             } else if (employerDoc.exists()) {
-                // Redirect to employer profile if user is found in employers collection
                 navigate('/employer/profile');
             } else {
                 console.error('User type not found in database.');
             }
         } catch (error) {
             console.error('Error signing in:', error);
+        }
+    };
+
+    const handleForgotPassword = async () => {
+        if (!email) {
+            alert('Please enter your email to reset your password.');
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            alert('Password reset email sent. Please check your inbox.');
+        } catch (error) {
+            console.error('Error sending password reset email:', error);
         }
     };
 
@@ -64,7 +72,7 @@ const SignIn = () => {
                         <input
                             className='input'
                             id='password'
-                            type={showPassword ? "text" : "password"} // Dynamic input type
+                            type={showPassword ? "text" : "password"}
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -89,6 +97,8 @@ const SignIn = () => {
                         </button>
                     </div>
                     <button className="input submit" type="submit">Sign In</button>
+                    {/* Changed forgot password from button to clickable text inside the form */}
+                    <p onClick={handleForgotPassword} style={{ marginTop: '10px', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Forgot Password?</p>
                 </form>
             </div>
         </div>
