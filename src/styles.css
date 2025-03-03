@@ -46,7 +46,7 @@ button {
 }
 
 button:hover {
-  background: #3d8de2;
+  background: #5baaff;
   color: #fff;
 }
 
@@ -835,9 +835,9 @@ nav a {
   display: flex;
   justify-content: center;
 }
-
+/*START ADMIN SECRET BUTTON*/
 .admin-btn {
-  display: none;  /* Hide by default */
+  display: none;  /* Hidden by default */
   background-color: #000000;
   color: white;
   padding: 10px 20px;
@@ -845,16 +845,20 @@ nav a {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: none;  /* Prevents hover effects */
 }
 
+/* Make it visible when the 'show' class is added */
 .admin-btn.show {
-  display: block;  /* Show when the 'show' class is added */
-}
-
-/* Optional: Additional styling for the footer when visible */
-footer.show .admin-btn {
   display: block;
 }
+
+/* Ensure the button does not visually change on hover */
+.admin-btn:hover {
+  background-color: #000000;  /* Same as default */
+  color: white;  /* Same as default */
+}
+/*END ADMIN SECRET BUTTON*/
 .modal-overlaysign {
   position: fixed;
   top: 0;
@@ -981,3 +985,43 @@ footer.show .admin-btn {
 
 
 /* END OF CHANGED EXCLAMATION POINT JOB POST CSS */
+
+
+/*
+Verification Email Style
+*/
+#emailverify{
+  top: 30%;
+  position: absolute;
+  background-color: rgb(245, 245, 245);
+  height: fit-content;
+  width: fit-content;
+  border-radius: 20px;
+  box-shadow: #000000;
+}
+
+/*START CHANGED VERIFY EMAIL BTN*/
+
+.verify-email-btn {
+  padding: 1rem 1.2rem;
+  margin: 1rem;
+  border-radius: 2rem;
+  display: block;
+  width: 90%;
+  border: none;
+  box-shadow: inset 6px 6px 8px rgba(97, 97, 97, 0.075),
+              6px 6px 6px rgba(39, 38, 38, 0.781);
+  outline: none;
+  background-color: #17252a; /* Matches .input default */
+  color: rgb(255, 255, 255);
+  font-size: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  text-align: center;
+}
+
+.verify-email-btn:hover {
+  background-color: #5baaff; /* Matches focus state of input */
+  color: rgb(0, 0, 0);
+}
