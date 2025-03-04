@@ -338,38 +338,81 @@ const handleRejectUser = async (user) => {
   
   if (!isAdmin) {
     return (
-      <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-        <h2>Admin Login</h2>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ padding: "10px", margin: "10px", borderRadius: "5px" }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ padding: "10px", margin: "10px", borderRadius: "5px" }}
-        />
-        <button
-          onClick={handleLogin}
-          style={{
-            padding: "10px 15px",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer"
-          }}
-        >
-          Login
-        </button>
-      </div>
+        <div style={{ 
+            display: "flex", 
+            justifyContent: "center", 
+            alignItems: "center", 
+            minHeight: "80vh",  // Adjusted height
+            fontFamily: "Arial, sans-serif"
+        }}>
+            <form onSubmit={handleLogin} style={{ 
+                display: "flex", 
+                flexDirection: "column", 
+                alignItems: "center", 
+                width: "100%", 
+                maxWidth: "600px", 
+                padding: "60px 40px", // More compact
+                borderRadius: "10px", 
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", 
+                background: "white",
+                textAlign: "center"
+            }}>
+                <h2 style={{ marginBottom: "15px", fontFamily: "Times New Roman" }}>Admin Login</h2>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    style={{ 
+                        width: "100%", 
+                        padding: "10px", 
+                        marginBottom: "10px", 
+                        borderRadius: "5px", 
+                        border: "1px solid #ccc", 
+                        fontSize: "16px", 
+                        textAlign: "center"
+                    }}
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    style={{ 
+                        width: "100%", 
+                        padding: "10px", 
+                        marginBottom: "10px", 
+                        borderRadius: "5px", 
+                        border: "1px solid #ccc", 
+                        fontSize: "16px", 
+                        textAlign: "center"
+                    }}
+                />
+                <button
+                    type="submit"
+                    style={{
+                        width: "100%",
+                        padding: "10px", 
+                        backgroundColor: "#007bff", 
+                        color: "#fff", 
+                        border: "none", 
+                        borderRadius: "5px", 
+                        cursor: "pointer",
+                        fontSize: "16px",
+                        transition: "0.3s"
+                    }}
+                    onMouseOver={(e) => e.target.style.backgroundColor = "#0056b3"}
+                    onMouseOut={(e) => e.target.style.backgroundColor = "#007bff"}
+                >
+                    Login
+                </button>
+            </form>
+        </div>
     );
-  }
+}
+
   return (
     <><div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <h2>Admin Page</h2>
