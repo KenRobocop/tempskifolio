@@ -187,7 +187,7 @@ const Auth = ({ userType, setUser }) => {
     return (
         <div className="hero" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <div className="choicecontainer2" style={{ textAlign: 'center', width: '100%', maxWidth: '400px' }}>
-                <h2>{isSignUp ? 'Sign Up' : 'Sign In'} as {userType}</h2>
+
                 <form
                     onSubmit={handleSubmit}
                     id="formauth"
@@ -200,6 +200,7 @@ const Auth = ({ userType, setUser }) => {
                     }}
                     
                     >
+                    <h2 style={{fontFamily: "times new roman"}}>{isSignUp ? 'Sign Up' : 'Sign In'} as {userType}</h2>
 
                     <input
                         id="email"

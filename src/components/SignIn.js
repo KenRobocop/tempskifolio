@@ -56,8 +56,9 @@ const SignIn = () => {
     return (
         <div className='hero' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <div className='choicecontainer' style={{ textAlign: 'center', width: '100%', maxWidth: '400px' }}>
+                {/*START OF FORM CHANGES*/}
+                <form onSubmit={handleSignIn} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '100px' }}>
                 <h2 style={{fontFamily: "times new roman"}}>Sign In</h2>
-                <form onSubmit={handleSignIn} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <input
                         id='email'
                         className='input'
@@ -100,6 +101,7 @@ const SignIn = () => {
                     {/* Changed forgot password from button to clickable text inside the form */}
                     <p onClick={handleForgotPassword} style={{ marginTop: '10px', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Forgot Password?</p>
                 </form>
+                {/*END OF FORM CHANGES*/}
             </div>
         </div>
     );

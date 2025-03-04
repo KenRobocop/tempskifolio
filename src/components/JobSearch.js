@@ -48,6 +48,41 @@ const JobSearch = () => {
         setFilteredJobs(filtered);
     };
 
+    //START OF SORTING BUTTON
+
+    const [sortOrder, setSortOrder] = useState("ascending"); // Default sort order
+    const [sortType, setSortType] = useState("date"); // Default sorting by date (or any criteria like title, location, etc.)
+
+    const handleSort = () => {
+        let sortedJobs = [...filteredJobs]; // Copy the jobs to avoid mutating the original array
+        
+        if (sortType === "title") {
+          // Alphabetical sorting by job title
+          sortedJobs.sort((a, b) => {
+            if (sortOrder === "ascending") {
+              return a.title.localeCompare(b.title); // Ascending alphabetical
+            } else if (sortOrder === "descending") {
+              return b.title.localeCompare(a.title); // Descending alphabetical
+            }
+            return 0;
+          });
+        } else if (sortType === "date") {
+          // Sorting by job posting date (you can adjust this if you have a date property)
+          sortedJobs.sort((a, b) => {
+            const dateA = new Date(a.postingDate); // Assuming jobs have a postingDate property
+            const dateB = new Date(b.postingDate);
+            return sortOrder === "ascending" ? dateA - dateB : dateB - dateA; // Ascending or Descending by date
+          });
+        }
+      
+        setFilteredJobs(sortedJobs); // Set the sorted jobs to state
+      };
+
+        //END OF SORTING BUTTON
+      
+      
+
+
     const highestEligibleJobs = filteredJobs.filter((job) => {
         const jobAvgScore = job.averageScore;
         const userAvgScore = userAverage;
@@ -143,53 +178,109 @@ const JobSearch = () => {
                 />
 
                 <div>
-                    <button>Sort by</button>
-                    <h3>Highest Eligible Jobs</h3>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-                        {highestEligibleJobs.map((job) => (
-                            <div
-                                key={job.id}
-                                style={{
-                                    border: "1px solid #ddd",
-                                    borderRadius: "8px",
-                                    boxShadow: "0 0 10px black",
-                                    padding: "10px",
-                                    width: "200px",
-                                    cursor: "pointer",
-                                    background: "#a6faf6",
-                                }}
-                                onClick={() => setExpandedJob(job)}
-                            >
-                                <h4>{job.title}</h4>
-                                <p><strong>Company:</strong> {job.companyName}</p>
-                                <p><strong>Location:</strong> {job.location}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                {/*START OF SORT BUTTON*/}
+                <button
+                onClick={() => {
+                    // Toggle between ascending and descending order
+                    setSortOrder((prevOrder) => (prevOrder === "ascending" ? "descending" : "ascending"));
+                    handleSort(); // Call the sorting function after toggling
+                }}
+                style={{
+                    padding: "8px 16px",
+                    fontSize: "16px",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    marginBottom: "20px",
+                    marginRight: "10px",
+                }}
+                >
+                Sort by {sortOrder === "ascending" ? "Descending" : "Ascending"}
+                </button>
 
-                <div>
+                <select
+                onChange={(e) => {
+                    setSortType(e.target.value); // Change sort type (e.g., title, date)
+                    handleSort(); // Apply sorting
+                }}
+                value={sortType}
+                style={{
+                    padding: "8px 16px",
+                    fontSize: "16px",
+                    borderRadius: "5px",
+                    border: "1px solid #ddd",
+                    marginBottom: "20px",
+                    backgroundColor: "#fff",
+                }}
+                >
+                <option value="date">Sort by Date</option>
+                <option value="title">Sort by Title</option>
+                </select>
+                {/*END OF SORT BUTTON*/}
+                <h3>Highest Eligible Jobs</h3>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+                    {highestEligibleJobs.map((job) => (
+                        <div
+                        key={job.id}
+                        style={{
+                            border: "1px solid #ddd",
+                            borderRadius: "8px",
+                            boxShadow: "0 0 10px black",
+                            padding: "10px",
+                            width: "200px",
+                            cursor: "pointer",
+                            background: "#a6faf6",
+                            transition: "transform 0.3s ease, box-shadow 0.3s ease", // Adding transition for smooth effect
+                        }}
+                        onClick={() => setExpandedJob(job)}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "scale(1.05)"; // Scale up slightly on hover
+                            e.currentTarget.style.boxShadow = "0 0 15px rgba(0, 0, 0, 0.3)"; // Enhance shadow
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "scale(1)"; // Reset to original size
+                            e.currentTarget.style.boxShadow = "0 0 10px black"; // Reset shadow
+                        }}
+                        >
+                        <h4>{job.title}</h4>
+                        <p><strong>Company:</strong> {job.companyName}</p>
+                        <p><strong>Location:</strong> {job.location}</p>
+                        </div>
+                    ))}
+                    </div>
+
                     <h3>All Jobs</h3>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-                        {filteredJobs.map((job) => (
-                            <div
-                                key={job.id}
-                                style={{
-                                    border: "1px solid #ddd",
-                                    borderRadius: "8px",
-                                    boxShadow: "0 0 10px black",
-                                    padding: "10px",
-                                    width: "200px",
-                                    cursor: "pointer",
-                                    background: "#a6faf6",
-                                }}
-                                onClick={() => setExpandedJob(job)}
-                            >
-                                <h4>{job.title}</h4>
-                                <p><strong>Company:</strong> {job.companyName}</p>
-                                <p><strong>Location:</strong> {job.location}</p>
-                            </div>
-                        ))}
+                    {filteredJobs.map((job) => (
+                        <div
+                        key={job.id}
+                        style={{
+                            border: "1px solid #ddd",
+                            borderRadius: "8px",
+                            boxShadow: "0 0 10px black",
+                            padding: "10px",
+                            width: "200px",
+                            cursor: "pointer",
+                            background: "#a6faf6",
+                            transition: "transform 0.3s ease, box-shadow 0.3s ease", // Adding transition for smooth effect
+                        }}
+                        onClick={() => setExpandedJob(job)}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "scale(1.05)"; // Scale up slightly on hover
+                            e.currentTarget.style.boxShadow = "0 0 15px rgba(0, 0, 0, 0.3)"; // Enhance shadow
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "scale(1)"; // Reset to original size
+                            e.currentTarget.style.boxShadow = "0 0 10px black"; // Reset shadow
+                        }}
+                        >
+                        <h4>{job.title}</h4>
+                        <p><strong>Company:</strong> {job.companyName}</p>
+                        <p><strong>Location:</strong> {job.location}</p>
+                        </div>
+                    ))}
                     </div>
                 </div>
                 {/**END OF CHANGING THE SEARCH JOB PAGE */}
