@@ -143,7 +143,7 @@ const ApplicantProfile = () => {
             <h2>Applicant Profile</h2>
 
             {/* Cover Photo */}
-            <div style={{ position: 'relative', width: '100%', height: '200px', overflow: 'hidden', marginBottom: '10px' }}>
+            <div style={{ position: 'relative', width: '100%', height: '300px', overflow: 'hidden', marginBottom: '10px' }}>
                 <img
                     src={coverPhotoURL}
                     alt="Cover"
@@ -165,12 +165,12 @@ const ApplicantProfile = () => {
                     src={profilePicURL}
                     alt="Profile"
                     style={{
-                        width: '100px',
-                        height: '100px',
+                        width: '150px',
+                        height: '150px',
                         borderRadius: '50%',
                         borderColor:'green',
                         cursor: 'pointer',
-                        border: '3px solid blue',
+                        border: '3px solid black',
                     }}
                     onClick={() => document.getElementById('profilePicInput').click()}
                 />
@@ -206,104 +206,198 @@ const ApplicantProfile = () => {
                     ) : null
                 )}
             </div>
-            {/* Resume */}
-            <div style={{ marginTop: '20px' }} id='Resume'>
-                <h4>Resume</h4>
-                {resumeURL ? (
-                    <div>
-                        <a href={resumeURL} target="_blank" rel="noopener noreferrer">View Resume</a>
-                        <button onClick={() => handleDelete('resume', null, resumeURL)} style={{ marginLeft: '10px', color: 'red',backgroundColor:'#ffffff00',borderRadius:'20px' }}>
-                            Delete
-                        </button>
-                    </div>
-                ) : (
-                    <button
-                        onClick={() => document.getElementById('resumeInput').click()}
-                        style={{
-                            padding: '5px 10px',
-                            backgroundColor: '#007bff',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        Upload Resume
-                    </button>
-                )}
-                <input
-                    id="resumeInput"
-                    type="file"
-                    accept=".pdf"
-                    style={{ display: 'none' }}
-                    onChange={(e) => handleFileChange(e, 'resume')}
-                />
-            </div>
-
-           
-
-            {/* Add Certificate Section, START THERE'S CHANGES IN HERE - hans <3 ;) */}
-            <div style={{ marginTop: '20px' }} id='certificate'>
-                <h4>Add a New Certificate</h4>
-                <select
-                    value={selectedSkill}
-                    onChange={(e) => setSelectedSkill(e.target.value)}
-                    style={{ padding: '5px', marginRight: '10px' }}
-                >
-                    {Object.keys(certifications).map((skill) => (
-                        <option key={skill} value={skill}>
-                            {skill}
-                        </option>
-                    ))}
-                </select>
-                <button
-                    onClick={() => document.getElementById('fileInput').click()}
-                    style={{
-                        padding: '5px 10px',
-                        backgroundColor: '#007bff',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
-                >
-                    Upload Certificate
-                </button>
-                <input
-                    id="fileInput"
-                    type="file"
-                    accept="image/*,application/pdf"
-                    style={{ display: 'none' }}
-                    onChange={(e) => handleFileChange(e, 'certificate')}
-                />
-            </div>
-            {/* Add Certificate Section, END THERE'S CHANGES IN HERE - hans <3 ;) */}
-
-            {/* Certifications Display by Category */}
-            <div style={{ marginTop: '30px' }} id='certificateTable'>
-                <h4>Certifications</h4>
-                {Object.entries(certifications).map(([skill, urls]) => (
-                    <div key={skill} style={{ marginBottom: '20px' }}>
-                        <h5>{skill} Certificates</h5>
-                        {urls.length ? (
+            {/*START CHANGED PROFILE* */}
+                    {/* Resume Section */}
+                    <div style={{
+                        marginTop: '30px', 
+                        padding: '20px', 
+                        background: '#ffffff', 
+                        borderRadius: '12px', 
+                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                        width: '100%',
+                        textAlign: 'center',
+                        transition: '0.3s ease',
+                    }} id='Resume'>
+                        <h4 style={{ marginBottom: '15px', fontWeight: 'bold' }}>
+                            <span style={{ marginRight: '10px' }}>📄</span> Resume
+                        </h4>
+                        {resumeURL ? (
                             <div>
-                                {urls.map((url, index) => (
-                                    <div key={`${skill}-${index}`} style={{ marginBottom: '10px' }}>
-                                        <a href={url} target="_blank" rel="noopener noreferrer">View Certificate {index + 1}</a>
-                                        <button
-                                            onClick={() => handleDelete('certificate', skill, url)}
-                                            style={{marginLeft: '10px', color: 'red',backgroundColor:'#ffffff00',borderRadius:'20px' }}
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                ))}
+                                <a href={resumeURL} target="_blank" rel="noopener noreferrer" 
+                                    style={{ 
+                                        color: '#007bff', 
+                                        textDecoration: 'none', 
+                                        fontWeight: 'bold', 
+                                        fontSize: '16px' 
+                                    }}>
+                                    View Resume
+                                </a>
+                                <button onClick={() => handleDelete('resume', null, resumeURL)} 
+                                    style={{ 
+                                        marginLeft: '10px', 
+                                        color: 'white', 
+                                        backgroundColor: '#f44336', 
+                                        border: 'none', 
+                                        borderRadius: '20px', 
+                                        padding: '7px 15px',
+                                        cursor: 'pointer',
+                                        fontSize: '14px',
+                                        transition: 'background-color 0.3s ease',
+                                    }}
+                                    onMouseOver={(e) => e.target.style.backgroundColor = '#e53935'}
+                                    onMouseOut={(e) => e.target.style.backgroundColor = '#f44336'}>
+                                    Delete
+                                </button>
                             </div>
                         ) : (
-                            <p>No certificates for {skill}</p>
+                            <button
+                                onClick={() => document.getElementById('resumeInput').click()}
+                                style={{
+                                    padding: '10px 20px',
+                                    backgroundColor: '#007bff',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontWeight: 'bold',
+                                    fontSize: '16px',
+                                    transition: '0.3s ease',
+                                }}
+                                onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
+                                onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}>
+                                Upload Resume
+                            </button>
                         )}
+                        <input
+                            id="resumeInput"
+                            type="file"
+                            accept=".pdf"
+                            style={{ display: 'none' }}
+                            onChange={(e) => handleFileChange(e, 'resume')}
+                        />
                     </div>
+
+                    {/* Add Certificate Section */}
+                    <div style={{
+                        marginTop: '30px', 
+                        padding: '20px', 
+                        background: '#ffffff', 
+                        borderRadius: '12px', 
+                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                        width: '100%',
+                        textAlign: 'center',
+                        transition: '0.3s ease',
+                    }} id='certificate'>
+                        <h4 style={{ marginBottom: '15px', fontWeight: 'bold' }}>
+                            <span style={{ marginRight: '10px' }}>🏅</span> Add a New Certificate
+                        </h4>
+                        <select
+                            value={selectedSkill}
+                            onChange={(e) => setSelectedSkill(e.target.value)}
+                            style={{ 
+                                padding: '8px 15px', 
+                                marginBottom: '15px', 
+                                marginRight: '10px', 
+                                borderRadius: '8px', 
+                                border: '1px solid #ccc',
+                                fontSize: '14px',
+                                width: '100%',
+                                maxWidth: '300px',
+                            }}>
+                            {Object.keys(certifications).map((skill) => (
+                                <option key={skill} value={skill}>{skill}</option>
+                            ))}
+                        </select>
+                        <button
+                            onClick={() => document.getElementById('fileInput').click()}
+                            style={{
+                                padding: '10px 20px',
+                                backgroundColor: '#007bff',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '8px',
+                                cursor: 'pointer',
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                transition: '0.3s ease',
+                            }}
+                            onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
+                            onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}>
+                            Upload Certificate
+                        </button>
+                        <input
+                            id="fileInput"
+                            type="file"
+                            accept="image/*,application/pdf"
+                            style={{ display: 'none' }}
+                            onChange={(e) => handleFileChange(e, 'certificate')}
+                        />
+                    </div>
+
+                    {/* Certifications Display by Category */}
+                    <div style={{
+                        marginTop: '30px', 
+                        padding: '20px', 
+                        background: '#ffffff', 
+                        borderRadius: '12px', 
+                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                        width: '100%',
+                        textAlign: 'center',
+                        transition: '0.3s ease',
+                    }} id='certificateTable'>
+                        <h4 style={{ marginBottom: '20px', fontWeight: 'bold' }}>
+                            <span style={{ marginRight: '10px' }}>🎓</span> Certifications
+                        </h4>
+                        {Object.entries(certifications).map(([skill, urls]) => (
+                            <div key={skill} style={{ marginBottom: '25px' }}>
+                                <h5 style={{ color: '#333', fontSize: '18px' }}>{skill} Certificates</h5>
+                                {urls.length ? (
+                                    <div>
+                                        {urls.map((url, index) => (
+                                            <div key={`${skill}-${index}`} style={{
+                                                marginBottom: '10px',
+                                                alignItems: 'center',
+                                                marginLeft: '10px',
+                                                justifyContent: 'center',
+                                                flexDirection: 'column',
+                                            }}>
+                                                <a href={url} target="_blank" rel="noopener noreferrer" 
+                                                    style={{ 
+                                                        color: '#007bff', 
+                                                        textDecoration: 'none', 
+                                                        fontWeight: 'bold', 
+                                                        fontSize: '16px',
+                                                        padding: '7px 15px',
+
+                                                    }}>
+                                                    View Certificate {index + 1}
+                                                </a>
+                                                <button
+                                                    onClick={() => handleDelete('certificate', skill, url)}
+                                                    style={{
+                                                        marginTop: '10px',
+                                                        color: 'white',
+                                                        backgroundColor: '#f44336',
+                                                        border: 'none',
+                                                        borderRadius: '20px',
+                                                        padding: '7px 15px',
+                                                        cursor: 'pointer',
+                                                        fontSize: '14px',
+                                                        transition: 'background-color 0.3s ease',
+                                                    }}
+                                                    onMouseOver={(e) => e.target.style.backgroundColor = '#e53935'}
+                                                    onMouseOut={(e) => e.target.style.backgroundColor = '#f44336'}>
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p>No certificates for {skill}</p>
+                                )}
+                            </div>
                 ))}
+                            {/*END CHANGED PROFILE* */}
             </div>
         </div>
     );
