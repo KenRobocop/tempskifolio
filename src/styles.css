@@ -1382,3 +1382,31 @@ tr:nth-child(even) {
 
 /*END OF PORTFOLIO LAYOUT CHANGES*/
 
+/* EMPLOYERPROFILE START */
+#Delete{
+  position: relative;
+  right: -85%;
+  top:10%;
+  margin: 20px;
+  width: 10%;
+  border-radius: 5%;
+  box-shadow: 0 0 5px black;
+  background-color: #e44f4f;
+  text-decoration: solid;
+
+}
+#JobBoard{
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+  font-family: 'Baskerville', serif;
+  font-weight:lighter; /* Makes the text bold */
+  width: 100%;
+}
+#JOBlist text, 
+#JOBlist p,
+#TITLE text,
+#DESC text{
+  text-align: center; /* Center the text */
+  margin: 0; /* Remove default margins */
+}
+/* EMPLOYERPROFILE END */

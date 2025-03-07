@@ -421,7 +421,7 @@ const handleRejectUser = async (user) => {
       onClick={() => {
         // Example log-out logic: remove user data or session
         localStorage.removeItem("authToken"); // Adjust according to your auth mechanism
-        window.location.href = "/"; // Redirect to login page after logout
+        window.location.href = "./"; // Redirect to login page after logout
       }}
       style={{
         position: "absolute", // Absolute positioning to place it at the top right

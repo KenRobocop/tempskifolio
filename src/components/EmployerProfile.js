@@ -1,10 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { db, storage, auth } from '../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, query, where, getDocs,deleteDoc } from 'firebase/firestore';
 import '../styles.css';
 import { setDoc} from 'firebase/firestore';
 
+// COPY PASTE MO HANS
 
 const EmployerProfile = () => {
     const [profilePicURL, setProfilePicURL] = useState('');
@@ -39,8 +41,24 @@ const EmployerProfile = () => {
 
         loadEmployerData();
         fetchJobs();
+        
     }, []);
-
+    const fetchJobs = async () => {
+        const jobQuery = query(collection(db, 'jobs'), where('employerId', '==', auth.currentUser.uid));
+        const jobSnapshot = await getDocs(jobQuery);
+        const jobData = jobSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setJobs(jobData);
+    };
+    const handleDeleteJob = async (jobId) => {
+        if (window.confirm("Are you sure you want to delete this submission?")) 
+            try {
+                const submissionRef = doc(db, 'jobs',jobId);
+                await deleteDoc(submissionRef);
+                fetchJobs();
+            } catch (error) {
+                console.error("Error deleting submission:", error);
+            }
+      };
     const fetchApplicants = async (jobId) => {
         const applicationsRef = collection(db, 'jobs', jobId, 'applications');
         const appSnapshot = await getDocs(applicationsRef);
@@ -54,6 +72,7 @@ const EmployerProfile = () => {
             fetchApplicants(job.id);
         }
     };
+
 
     const handleApplicantClick = (applicant) => {
         setSelectedApplicant(applicant);
@@ -107,21 +126,45 @@ const EmployerProfile = () => {
             <h2>Welcome, {companyName}</h2>
 
             {/* Job Listings */}
-            <div style={{ marginTop: '30px' }}>
+            
+            <div  style={{ marginTop: '30px' }}>
                 <h3>Your Jobs</h3>
                 {jobs.length === 0 ? (
                     <p>No jobs posted yet.</p>
                 ) : (
                     jobs.map((job) => (
                         <div
+                            id='JobBoard'
                             key={job.id}
-                            style={{ border: '1px solid #ccc', padding: '15px', margin: '15px 0', backgroundColor: "#a6faf6" }}
+                            style={{ border: '1px solid #ccc', padding: '5px', margin: '10px 0' ,height:'50%'}}
                             onClick={() => handleJobClick(job)}
                         >
-                            <h4>{job.title}</h4>
-                            <p>{job.description}</p>
+                            <div>
+                            <h4 
+  id='TITLE' 
+  style={{ 
+    textAlign: "left", 
+    margin: "0", 
+    fontSize: "200%", 
+    marginLeft: "1%" 
+  }}
+>
+  {job.title}
+</h4>
+<p 
+  id='DESC' 
+  style={{ 
+    textAlign: "left", 
+    margin: "0", 
+    fontSize: "100%", 
+    marginLeft: "1%", 
+    
+  }}
+>
+  {job.description}
+</p>
                             {selectedJob === job.id && (
-                                <div>
+                                <div id='JOBlist'>
                                     <h5>Applicants:</h5>
                                     <div
                                         style={{
@@ -152,8 +195,11 @@ const EmployerProfile = () => {
                                             <p>No applicants yet.</p>
                                         )}
                                     </div>
+                                    {/* <button onClick={() => handleDeleteJob(job.id)}>Delete</button> */}
                                 </div>
                             )}
+                             </div>
+                               <button id = "Delete"onClick={() => handleDeleteJob(job.id)}>Delete</button>
                         </div>
                     ))
                 )}

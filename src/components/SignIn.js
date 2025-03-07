@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { signOut } from 'firebase/auth';
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -37,6 +36,7 @@ const SignIn = () => {
             }
         } catch (error) {
             console.error('Error signing in:', error);
+            alert('Failed to sign in. Please check your email and password.');
         }
     };
 
@@ -45,20 +45,30 @@ const SignIn = () => {
             alert('Please enter your email to reset your password.');
             return;
         }
+
+        const confirmation = window.confirm(`Send password reset email to ${email}?`);
+        if (!confirmation) return;
+
         try {
             await sendPasswordResetEmail(auth, email);
-            alert('Password reset email sent. Please check your inbox.');
+            alert(`A password reset link has been sent to ${email}. Please check your inbox.`);
         } catch (error) {
             console.error('Error sending password reset email:', error);
+            if (error.code === 'auth/user-not-found') {
+                alert('No account found with this email. Please check and try again.');
+            } else if (error.code === 'auth/invalid-email') {
+                alert('Invalid email format. Please enter a valid email.');
+            } else {
+                alert('Failed to send password reset email. Please try again later.');
+            }
         }
     };
 
     return (
         <div className='hero' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <div className='choicecontainer' style={{ textAlign: 'center', width: '100%', maxWidth: '400px' }}>
-                {/*START OF FORM CHANGES*/}
                 <form onSubmit={handleSignIn} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '100px' }}>
-                <h2 style={{fontFamily: "times new roman"}}>Sign In</h2>
+                    <h2 style={{ fontFamily: "Times New Roman" }}>Sign In</h2>
                     <input
                         id='email'
                         className='input'
@@ -98,10 +108,8 @@ const SignIn = () => {
                         </button>
                     </div>
                     <button className="input submit" type="submit">Sign In</button>
-                    {/* Changed forgot password from button to clickable text inside the form */}
                     <p onClick={handleForgotPassword} style={{ marginTop: '10px', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Forgot Password?</p>
                 </form>
-                {/*END OF FORM CHANGES*/}
             </div>
         </div>
     );

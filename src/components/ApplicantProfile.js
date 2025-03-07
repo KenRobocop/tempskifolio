@@ -3,6 +3,9 @@ import { db, storage, auth } from '../firebase';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { doc, getDoc, updateDoc, arrayRemove, setDoc, collection, addDoc } from 'firebase/firestore';
 
+
+
+
 const ApplicantProfile = () => {
     const [profilePicURL, setProfilePicURL] = useState('');
     const [coverPhotoURL, setCoverPhotoURL] = useState('');

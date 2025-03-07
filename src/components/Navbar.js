@@ -189,6 +189,11 @@ const Navbar = ({ userType, onLogout }) => {
                     Portfolio
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/notifications">
+                    Notifications
+                  </Link>
+                </li>
               </>
             )}
             {userType === "employer" && (
