@@ -136,30 +136,35 @@ const Portfolio = () => {
     };
 
     return (
-        <div style={{ padding: '20px' }} id='portfolio'>
-            <h3 style={{marginTop: "25px"}}>Portfolio</h3>
+        <div className="portfolio-container">
+            <h3 className="section-title" >Portfolio</h3>
             {userData && (
-                <p>
-                    GitHub: <a href={userData.githubLink} target="_blank" rel="noopener noreferrer">{userData.githubLink}</a>
-                </p>
+                <div className="github-link">
+                    <p>
+                        GitHub: <a href={userData.githubLink} target="_blank" rel="noopener noreferrer">{userData.githubLink}</a>
+                    </p>
+                </div>
             )}
 
-            <input
-                type="text"
-                placeholder="Enter Live Demo Link"
-                value={liveDemoLink}
-                onChange={(e) => setLiveDemoLink(e.target.value)}
-            />
-            <button onClick={handleOpenModal}>Submit</button>
+            <div className="form-group">
+                <input
+                    type="text"
+                    placeholder="Enter Live Demo Link"
+                    value={liveDemoLink}
+                    onChange={(e) => setLiveDemoLink(e.target.value)}
+                />
+                <button className="primary-btn" onClick={handleOpenModal}>Submit</button>
+            </div>
 
             {showModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
+                <div className="portfolio-modal-overlay">
+                    <div className="portfolio-modal-content">
                         <h4>Upload Demo Video</h4>
                         <input type="file" accept="video/*" onChange={handleFileChange} />
-                        <div className="modal-actions">
-                            <button onClick={handleCloseModal}>Cancel</button>
+                        <div className="portfolio-modal-actions">
+                            <button className="secondary-btn" onClick={handleCloseModal}>Cancel</button>
                             <button
+                                className="primary-btn"
                                 disabled={!isVideoValid}
                                 onClick={handleSubmission}
                             >
@@ -173,7 +178,7 @@ const Portfolio = () => {
             {loading ? (
                 <p>Loading submissions...</p>
             ) : (
-                <div className="submissions-container">
+                <div className={`submissions-grid ${showModal ? 'disable-hover' : ''}`}>
                     {submissions.map((submission, index) => (
                         <div key={submission.id} className="submission-card">
                             <h4>
@@ -190,13 +195,15 @@ const Portfolio = () => {
                                 <source src={submission.demoVideoLink} type="video/mp4" />
                                 Your browser does not support the video tag.
                             </video>
-                            <p>Scores:</p>
-                            <ul>
-                                <li>HTML: {submission.scores.html}</li>
-                                <li>CSS: {submission.scores.css}</li>
-                                <li>JavaScript: {submission.scores.javascript}</li>
-                            </ul>
-                            <button onClick={() => handleDeleteSubmission(submission.id)}>Delete</button>
+                            <div className="scores">
+                                <p>Scores:</p>
+                                <ul>
+                                    <li>HTML: {submission.scores.html}</li>
+                                    <li>CSS: {submission.scores.css}</li>
+                                    <li>JavaScript: {submission.scores.javascript}</li>
+                                </ul>
+                            </div>
+                            <button className="delete-btn" onClick={() => handleDeleteSubmission(submission.id)}>Delete</button>
                         </div>
                     ))}
                 </div>

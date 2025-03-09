@@ -14,6 +14,7 @@ import SignIn from './components/SignIn';
 import Portfolio from './components/Portfolio';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AdminPage from './components/AdminPage';
+import NotificationPanel from './components/Notifications';
 
 const App = () => {
     const [userType, setUserType] = useState(null);
@@ -50,6 +51,8 @@ const App = () => {
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/home" element={<HomeFeed />} />
                 <Route path="/admin" element={<AdminPage />} />
+                <Route path="/Notifications" element={<NotificationPanel />} />
+
             </Routes>
         </Router>
     );

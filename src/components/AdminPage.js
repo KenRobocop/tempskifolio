@@ -34,10 +34,12 @@ const AdminPage = () => {
             const userId = doc.id;
             const applicantData = doc.data();
 
+
             // Fetch submissions
             const submissionsRef = collection(db, "applicants", userId, "submissions");
             const submissionsSnapshot = await getDocs(submissionsRef);
             const submissions = submissionsSnapshot.docs.map((subDoc) => subDoc.data());
+
 
             // Fetch applied jobs
             const appliedJobsRef = collection(db, "applicants", userId, "appliedJobs");
@@ -58,6 +60,7 @@ const AdminPage = () => {
       }
     };
 
+
     fetchApplicants();
   }, []);
   useEffect(() => {
@@ -74,6 +77,7 @@ const AdminPage = () => {
       }
     };
 
+
     fetchPendingJobs();
   }, []);
   const handleToggleClass = () => {
@@ -84,6 +88,7 @@ const AdminPage = () => {
   
     // // Find the element with the "JobsToBeApproved" class or ID
     // const jobsToBeApprovedElement = document.querySelector(".JobsToBeApproved");
+
 
     //   // Check if the element exists before toggling visibility
     //   if (jobsToBeApprovedElement) {
@@ -102,6 +107,7 @@ const AdminPage = () => {
     // // Find the element with the "JobsToBeApproved" class or ID
     // const jobsToBeApprovedElement = document.querySelector(".JobsToBeApproved");
 
+
     //   // Check if the element exists before toggling visibility
     //   if (jobsToBeApprovedElement) {
     //     setIsUserClassVisible(true); // Show the JobsToBeApproved content
@@ -114,6 +120,7 @@ const [usersToApprove, setUsersToApprove] = useState([]);
 const [deletedFiles, setDeletedFiles] = useState([]);
 const [showDeletedFiles, setShowDeletedFiles] = useState(false); // Toggle for deleted files view
 
+
 useEffect(() => {
     const fetchUsersToApprove = async () => {
         try {
@@ -125,8 +132,10 @@ useEffect(() => {
         }
     };
 
+
     fetchUsersToApprove();
 }, [showDeletedFiles]);
+
 
 useEffect(() => {
   const fetchUsersToApprove = async () => {
@@ -157,11 +166,14 @@ const handleApproveUser = async (user) => {
     try {
         const targetCollection = user.type === "applicant" ? "applicants" : "employers";
 
+
         // Add user to the target collection
         await setDoc(doc(db, targetCollection, user.id), { ...user, status: "approved" });
 
+
         // Remove user from the approval collection
         await deleteDoc(doc(db, "userAccountsToBeApproved", user.id));
+
 
         // Update local state
         setUsersToApprove(usersToApprove.filter((u) => u.id !== user.id));
@@ -172,14 +184,17 @@ const handleApproveUser = async (user) => {
     }
 };
 
+
 // Reject User
 const handleRejectUser = async (user) => {
     try {
         // Move user data to the `deletedFiles` collection
         await setDoc(doc(db, "deletedFiles", user.id), user);
 
+
         // Remove user from the approval collection
         await deleteDoc(doc(db, "userAccountsToBeApproved", user.id));
+
 
         // Update local state
         setUsersToApprove(usersToApprove.filter((u) => u.id !== user.id));
@@ -189,6 +204,7 @@ const handleRejectUser = async (user) => {
         alert("Failed to reject user. Please try again.");
     }
 };
+
 
   // Fetch Employers
   useEffect(() => {
@@ -205,8 +221,10 @@ const handleRejectUser = async (user) => {
       }
     };
 
+
     fetchEmployers();
   }, []);
+
 
   const handleLogin = () => {
     // Hardcoded Admin Credentials
@@ -261,6 +279,7 @@ const handleRejectUser = async (user) => {
   
   
 
+
   // Handle Job Click: Fetch applicants for the selected job
   const handleJobClick = async (jobId) => {
     setSelectedJob(jobId);
@@ -271,11 +290,13 @@ const handleRejectUser = async (user) => {
   };
   
 
+
   // Handle Applicant Click (from employer's job applicants)
   const handleApplicantClick = (applicant) => {
     setSelectedApplicant(applicant);
     setIsApplicant(true);
   };
+
 
   // Close Modals
   const handleCloseUserModal = () => {
@@ -285,6 +306,7 @@ const handleRejectUser = async (user) => {
     setJobApplicants([]);
   };
 
+
   const handleCloseApplicantModal = () => {
     setSelectedApplicant(null);
   };
@@ -293,8 +315,10 @@ const handleRejectUser = async (user) => {
       // Add job to the 'jobs' collection
       await setDoc(doc(db, "jobs", job.id), job);
 
+
       // Delete job from 'jobs-to-be-approved'
       await deleteDoc(doc(db, "jobs-to-be-approved", job.id));
+
 
       // Update local state
       setPendingJobs(pendingJobs.filter((j) => j.id !== job.id));
@@ -310,6 +334,7 @@ const handleRejectUser = async (user) => {
       setIsApplicant(true)
       // Delete job from 'jobs-to-be-approved'
       await deleteDoc(doc(db, "jobs-to-be-approved", jobId));
+
 
       // Update local state
       setPendingJobs(pendingJobs.filter((j) => j.id !== jobId));
@@ -330,6 +355,7 @@ const handleRejectUser = async (user) => {
       }
     }
   }, [selectedUserType]);
+
 
   const toggleUserDivClass = () => {
     setSelectedUserType(selectedUserType === "JobsToBeApproved" ? "Applicants" : "JobsToBeApproved");
@@ -411,8 +437,7 @@ const handleRejectUser = async (user) => {
             </form>
         </div>
     );
-}
-
+  }
   return (
     <><div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <h2>Admin Page</h2>
@@ -442,6 +467,7 @@ const handleRejectUser = async (user) => {
       Log Out
     </button>
 
+
       {/* User Type Toggle */}
       <div style={{ marginBottom: "20px" }}>
         <button
@@ -449,6 +475,7 @@ const handleRejectUser = async (user) => {
             setSelectedUserType("Applicants");
             setIsUserClassVisible(false);
             setUserApproval(false);
+            setShowDeletedFiles(false);
           }}
           
           style={{
@@ -465,9 +492,10 @@ const handleRejectUser = async (user) => {
         </button>
         <button
           onClick={() => {
-            setSelectedUserType("Employers")
-            setIsUserClassVisible(false)
+            setSelectedUserType("Employers");
+            setIsUserClassVisible(false);
             setUserApproval(false);
+            setShowDeletedFiles(false);
         }}
           style={{
             padding: "10px 15px",
@@ -481,292 +509,228 @@ const handleRejectUser = async (user) => {
           View Employers
         </button>
         <button
-               onClick={handleToggleClass}
-               style={{
-                 marginRight: "10px",
-                 padding: "10px 15px",
-                 backgroundColor: isUserClassVisible ? "#007bff" : "#ddd",
-                 color: "#fff",
-                 border: "none",
-                 borderRadius: "5px",
-                 cursor: "pointer",
-               }}
-        //   {/* style={{
-        //     marginRight: "10px",
-        //     padding: "10px 15px",
-        //     backgroundColor: selectedUserType === "JobsToBeApproved" ? "#007bff" : "#ddd",
-        //     color: "#fff",
-        //     border: "none",
-        //     borderRadius: "5px",
-        //     cursor: "pointer",
-        //   }} */}
-        >
+          onClick={handleToggleClass}  
+            style={{
+              marginLeft:"10px",
+              marginRight: "10px",
+              padding: "10px 15px",
+              backgroundColor: isUserClassVisible ? "#007bff" : "#ddd",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+           }}      
+          >
           Jobs to Be Approved
-       
         </button>
         <button
-      id="approve"
-      onClick={() => {
+          onClick={() => {
+            setUserApproval(true);
+            setShowDeletedFiles(false); 
+            setIsUserClassVisible(false);
+            setSelectedUserType(false)
+        }}
+          style={{
+            marginRight: "10px" , 
+            padding: "10px 15px",
+            backgroundColor: isUserApproval ? "#007bff" : "#ddd",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+        }}
+        >
+          View User Accounts ({usersToApprove.length || 0} Waiting)
+        </button>
 
-        setUserApproval(true);
-        setShowDeletedFiles(!showDeletedFiles);
-        setIsUserClassVisible(false);
-      }}
-      style={{
-        padding: "10px 15px",
-        backgroundColor: selectedUserType === "Employers" && !isUserClassVisible ? "#007bff" : "#ddd",
-        color: "#fff",
-        border: "none",
-        borderRadius: "5px",
-        cursor: "pointer",
-      }}
-      >
-      {showDeletedFiles
-        ? "Deleted Files"
-        : `View User Accounts (${usersToApprove.length || 0} Waiting)`}
-    </button>
-      </div>
+
+        <button
+          onClick={() => {
+            setShowDeletedFiles(true);
+            setUserApproval(false); 
+            setIsUserClassVisible(false);
+            setSelectedUserType("");
+        }}
+          style={{
+            padding: "10px 15px",
+            backgroundColor: showDeletedFiles ? "#007bff" : "#ddd",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+        }}
+        >
+          View Deleted Files
+        </button>
+    </div>
+
 
       {/* User Table */}
-      {!isUserClassVisible && (
-  <div
-    className="user"
-    style={{
-      border: "1px solid #ddd",
-      borderRadius: "10px",
-      padding: "20px",
-      backgroundColor: "#f9f9f9",
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    }}
-  >
-    <h3 style={{ textAlign: "center", marginBottom: "20px", fontSize: "1.5rem" }}>
-      {selectedUserType}
-    </h3>
-    <table style={{ width: "100%", borderCollapse: "collapse",boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
-      <thead>
-        <tr style={{ backgroundColor: "#007bff", color: "white" }}>
-          <th style={{ padding: "12px 20px", border: "1px solid #ddd" }}>
-            {selectedUserType === "Applicants" ? "Name" : "Company Name"}
-          </th>
-          <th style={{ padding: "12px 20px", border: "1px solid #ddd" }}>Email</th>
-          <th style={{ padding: "12px 20px", border: "1px solid #ddd" }}>Details</th>
-        </tr>
-      </thead>
-      <tbody>
-        {(selectedUserType === "Applicants" ? applicants : employers).map((user) => (
-          <tr
-            key={user.id || user.userId}
-            style={{
-              transition: "background-color 0.3s",
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = "#f0f8ff"} // Hover effect
-            onMouseLeave={(e) => e.target.style.backgroundColor = "white"}
-          >
-            <td style={{ padding: "12px 20px", border: "1px solid #ddd" }}>
-              {user.name || user.companyName}
-            </td>
-            <td style={{ padding: "12px 20px", border: "1px solid #ddd" }}>
-              {user.email}
-            </td>
-            <td
-              style={{
-                padding: "12px 20px",
-                border: "1px solid #ddd",
-                textAlign: "center",
-              }}
-            >
-              <button
-                onClick={() => handleUserClick(user)}
-                style={{
-                  padding: "8px 15px",
-                  backgroundColor: "#007bff",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  transition: "background-color 0.3s",
-                }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = "#0056b3"} // Hover effect
-                onMouseLeave={(e) => e.target.style.backgroundColor = "#007bff"}
-              >
-                View
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-)}
-
-{/* Detailed Applicant Modal */}
-{selectedUser && (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    }}
-  >
-    <div
-      style={{
-        backgroundColor: "#fff",
-        padding: "30px",
-        borderRadius: "10px",
-        maxWidth: "600px",
-        width: "90%",
-        maxHeight: "80%",
-        overflowY: "auto",
-        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      <h4 style={{ textAlign: "center" }}>
-        {selectedUserType === "Applicants"
-          ? "Applicant Details"
-          : "Employer Details"}
-      </h4>
-
-      {selectedUserType === "Applicants" && !isUserClassVisible ? (
-        <>
-          <p>
-            <strong>Name:</strong> {selectedUser.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {selectedUser.email}
-          </p>
-          <p>
-            <strong>Resume:</strong>{" "}
-            <a
-              href={selectedUser.resumeURL}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "#007bff",
-                textDecoration: "underline",
-              }}
-            >
-              View Resume
-            </a>
-          </p>
-          <h5>Submissions</h5>
-          <ul>
-            {selectedUser.submissions?.map((submission, index) => (
-              <li key={index}>
-                <strong>Live Demo:</strong>{" "}
-                <a
-                  href={submission.liveDemoLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "#007bff",
-                    textDecoration: "underline",
-                  }}
-                >
-                  View
-                </a>{" "}
-                | <strong>Demo Video:</strong>{" "}
-                <a
-                  href={submission.demoVideoLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "#007bff",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Watch
-                </a>
-              </li>
-            ))}
-          </ul>
-          <h5>Applied Jobs</h5>
-          <ul>
-            {selectedUser.appliedJobs?.map((job, index) => (
-              <li key={index}>
-                <p>
-                  <strong>Job Title:</strong> {job.title}
-                </p>
-                <p>
-                  <strong>Location:</strong> {job.location}
-                </p>
-                <p>
-                  <strong>Applied At:</strong>{" "}
-                  {job.appliedAt?.toDate().toLocaleString() || "N/A"}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : selectedUserType !== "Applicants" && !isUserClassVisible ? (
-        <>
-          <p>
-            <strong>Company Name:</strong> {selectedUser.companyName}
-          </p>
-          <p>
-            <strong>Email:</strong> {selectedUser.email}
-          </p>
-          <h5>Posted Jobs</h5>
-          <ul>
-            {employerJobs.map((job, index) => (
-              <li key={index}>
-                <p>
-                  <strong>Job Title:</strong> {job.title}
-                </p>
-                <p>
-                  <strong>Location:</strong> {job.location}
-                </p>
-                <p>
+      {!isUserClassVisible && !isUserApproval && !showDeletedFiles && (
+      <div className="user" style={{ border: "1px solid #ddd", borderRadius: "5px", padding: "20px" }}>
+        <h3>{selectedUserType}</h3>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              <th style={{ border: "1px solid #ddd", padding: "10px" }}>
+                {selectedUserType === "Applicants" ? "Name" : "Company Name"}
+              </th>
+              <th style={{ border: "1px solid #ddd", padding: "10px" }}>Email</th>
+              <th style={{ border: "1px solid #ddd", padding: "10px" }}>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(selectedUserType === "Applicants" ? applicants : employers).map((user) => (
+              <tr key={user.id || user.userId}>
+                <td style={{ border: "1px solid #ddd", padding: "10px" }}>
+                  {user.name || user.companyName}
+                </td>
+                <td style={{ border: "1px solid #ddd", padding: "10px" }}>{user.email}</td>
+                <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>
                   <button
-                    onClick={() => handleJobClick(job.id)}
+                    onClick={() => handleUserClick(user)}
                     style={{
-                      padding: "8px 15px",
+                      padding: "5px 10px",
                       backgroundColor: "#007bff",
                       color: "#fff",
                       border: "none",
-                      borderRadius: "5px",
+                      borderRadius: "3px",
                       cursor: "pointer",
-                      transition: "background-color 0.3s",
                     }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = "#0056b3"} // Hover effect
-                    onMouseLeave={(e) => e.target.style.backgroundColor = "#007bff"}
                   >
-                    View Applicants
+                    View
                   </button>
-                </p>
-              </li>
+                </td>
+              </tr>
             ))}
-          </ul>
-        </>
-      ) : null}
+          </tbody>
+        </table>
+      </div>
+      )}
+      {/* Detailed Applicant Modal */}
+      {selectedUser && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#fff",
+              padding: "20px",
+              borderRadius: "5px",
+              maxWidth: "600px",
+              width: "90%",
+              maxHeight: "80%",
+              overflowY: "auto",
+            }}
+          >
+            <h4>{selectedUserType === "Applicants" ? "Applicant Details" : ("Employer Details" && selectedUserType !== "JobsToBeApproved")}</h4>
 
-      <button
-        onClick={handleCloseUserModal}
-        style={{
-          marginTop: "20px",
-          padding: "12px 20px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          fontWeight: "bold",
-          width: "100%",
-          transition: "background-color 0.3s",
-        }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = "#0056b3"} // Hover effect
-        onMouseLeave={(e) => e.target.style.backgroundColor = "#007bff"}
-      >
-        Close
-      </button>
-    </div>
-  </div>
-)}
+
+            {selectedUserType === "Applicants" && !isUserClassVisible ? (
+  <>
+    <p>
+      <strong>Name:</strong> {selectedUser.name}
+    </p>
+    <p>
+      <strong>Email:</strong> {selectedUser.email}
+    </p>
+    <p>
+      <strong>Resume:</strong>{" "}
+      <a href={selectedUser.resumeURL} target="_blank" rel="noopener noreferrer">
+        View Resume
+      </a>
+    </p>
+    <h5>Submissions</h5>
+    <ul>
+      {selectedUser.submissions?.map((submission, index) => (
+        <li key={index}>
+          <strong>Live Demo:</strong>{" "}
+          <a href={submission.liveDemoLink} target="_blank" rel="noopener noreferrer">
+            View
+          </a>{" "}
+          | <strong>Demo Video:</strong>{" "}
+          <a href={submission.demoVideoLink} target="_blank" rel="noopener noreferrer">
+            Watch
+          </a>
+        </li>
+      ))}
+    </ul>
+    <h5>Applied Jobs</h5>
+    <ul>
+      {selectedUser.appliedJobs?.map((job, index) => (
+        <li key={index}>
+          <p>
+            <strong>Job Title:</strong> {job.title}
+          </p>
+          <p>
+            <strong>Location:</strong> {job.location}
+          </p>
+          <p>
+            <strong>Applied At:</strong> {job.appliedAt?.toDate().toLocaleString() || "N/A"}
+          </p>
+        </li>
+      ))}
+    </ul>
+  </>
+) : selectedUserType !== "Applicants" &&  !isUserClassVisible ? (
+  <>
+    <p>
+      <strong>Company Name:</strong> {selectedUser.companyName}
+    </p>
+    <p>
+      <strong>Email:</strong> {selectedUser.email}
+    </p>
+    <h5>Posted Jobs</h5>
+    <ul>
+      {employerJobs.map((job, index) => (
+        <li key={index}>
+          <p>
+            <strong>Job Title:</strong> {job.title}
+          </p>
+          <p>
+            <strong>Location:</strong> {job.location}
+          </p>
+          <p>
+            <button onClick={() => handleJobClick(job.id)} style={{ cursor: "pointer" }}>
+              View Applicants
+            </button>
+          </p>
+        </li>
+      ))}
+    </ul>
+  </>
+) : null}
+
+
+
+
+            <button
+              onClick={handleCloseUserModal}
+              style={{
+                marginTop: "20px",
+                padding: "10px 15px",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
 
       {/* Job Applicants Modal */}
@@ -787,38 +751,36 @@ const handleRejectUser = async (user) => {
           <div
             style={{
               backgroundColor: "#fff",
-              padding: "30px",
-              borderRadius: "10px",
+              padding: "20px",
+              borderRadius: "5px",
               maxWidth: "600px",
               width: "90%",
               maxHeight: "80%",
               overflowY: "auto",
-              boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <h4 style={{ textAlign: "center" }}>Job Applicants</h4>
-            <ul style={{ listStyleType: "none", padding: 0 }}>
+            <h4>Job Applicants</h4>
+            <ul>
               {jobApplicants.map((applicant, index) => (
-                <li key={index} style={{ marginBottom: "15px", padding: "10px", borderBottom: "1px solid #ddd" }}>
+                <li key={index}>
                   <p>
                     <strong>Name:</strong> {applicant.name}
                   </p>
-                  <button
-                    onClick={() => handleApplicantClick(applicant)}
-                    style={{
-                      padding: "8px 15px",
-                      backgroundColor: "#007bff",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                      transition: "background-color 0.3s",
-                    }}
-                    onMouseEnter={(e) => (e.target.style.backgroundColor = "#0056b3")}
-                    onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
-                  >
-                    View Applicant
-                  </button>
+                  <p>
+                    <button
+                      onClick={() => handleApplicantClick(applicant)}
+                      style={{
+                        padding: "5px 10px",
+                        backgroundColor: "#007bff",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "3px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      View Applicant
+                    </button>
+                  </p>
                 </li>
               ))}
             </ul>
@@ -826,24 +788,20 @@ const handleRejectUser = async (user) => {
               onClick={() => setSelectedJob(null)}
               style={{
                 marginTop: "20px",
-                padding: "12px 20px",
+                padding: "10px 15px",
                 backgroundColor: "#007bff",
                 color: "#fff",
                 border: "none",
                 borderRadius: "5px",
                 cursor: "pointer",
-                fontWeight: "bold",
-                width: "100%",
-                transition: "background-color 0.3s",
               }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#0056b3")}
-              onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
             >
               Close
             </button>
           </div>
         </div>
       )}
+
 
       {/* Applicant Detailed View */}
       {selectedApplicant && (
@@ -863,26 +821,24 @@ const handleRejectUser = async (user) => {
           <div
             style={{
               backgroundColor: "#fff",
-              padding: "30px",
-              borderRadius: "10px",
+              padding: "20px",
+              borderRadius: "5px",
               maxWidth: "600px",
               width: "90%",
               maxHeight: "80%",
               overflowY: "auto",
-              boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <h4 style={{ textAlign: "center" }}>Applicant Details</h4>
-            <p><strong>Name:</strong> {selectedApplicant.name}</p>
-            <p><strong>Email:</strong> {selectedApplicant.email}</p>
+            <h4>Applicant Details</h4>
+            <p>
+              <strong>Name:</strong> {selectedApplicant.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {selectedApplicant.email}
+            </p>
             <p>
               <strong>Resume:</strong>{" "}
-              <a
-                href={selectedApplicant.resumeURL}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#007bff", textDecoration: "underline" }}
-              >
+              <a href={selectedApplicant.resumeURL} target="_blank" rel="noopener noreferrer">
                 View Resume
               </a>
             </p>
@@ -890,86 +846,69 @@ const handleRejectUser = async (user) => {
               onClick={handleCloseApplicantModal}
               style={{
                 marginTop: "20px",
-                padding: "12px 20px",
+                padding: "10px 15px",
                 backgroundColor: "#007bff",
                 color: "#fff",
                 border: "none",
                 borderRadius: "5px",
                 cursor: "pointer",
-                fontWeight: "bold",
-                width: "100%",
-                transition: "background-color 0.3s",
               }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#0056b3")}
-              onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
             >
               Close
             </button>
           </div>
         </div>
       )}
+    </div>
+    {(isUserClassVisible == true) && !selectedUser &&(
+        <div  style={{ border: "1px solid #ddd", borderRadius: "5px", padding: "20px", fontFamily: "Arial, sans-serif" }}>
+          <h3>Jobs to Be Approved</h3>
 
-      {/* Jobs to Be Approved */}
-      {isUserClassVisible && (
-        <div style={{       
-          border: "1px solid #ddd",
-          borderRadius: "10px",
-          padding: "20px",
-          backgroundColor: "#f9f9f9",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          }}>
-          <h2 style={{ textAlign: "center", marginBottom: "20px", fontSize: "1.5rem" }}>Jobs to Be Approved</h2>
 
           {/* Pending Jobs Table */}
-          <table style={{ width: "100%", borderCollapse: "collapse", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ backgroundColor: "#007bff", color: "white" }}>
-                <th style={{ padding: "12px 20px", border: "1px solid #ddd" }}>Job Title</th>
-                <th style={{ padding: "12px 20px", border: "1px solid #ddd" }}>Company Name</th>
-                <th style={{ padding: "12px 20px", border: "1px solid #ddd" }}>Location</th>
-                <th style={{ padding: "12px 20px", border: "1px solid #ddd" }}>Actions</th>
+              <tr>
+                <th style={{ border: "1px solid #ddd", padding: "10px" }}>Job Title</th>
+                <th style={{ border: "1px solid #ddd", padding: "10px" }}>Company Name</th>
+                <th style={{ border: "1px solid #ddd", padding: "10px" }}>Location</th>
+                <th style={{ border: "1px solid #ddd", padding: "10px" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {pendingJobs.map((job) => (
-                <tr key={job.id} style={{ transition: "background-color 0.3s" }}
-                  onMouseEnter={(e) => (e.target.style.backgroundColor = "#f0f8ff")}
-                  onMouseLeave={(e) => (e.target.style.backgroundColor = "white")}
-                >
-                  <td style={{ padding: "12px 20px", border: "1px solid #ddd" }}>{job.title}</td>
-                  <td style={{ padding: "12px 20px", border: "1px solid #ddd" }}>{job.companyName}</td>
-                  <td style={{ padding: "12px 20px", border: "1px solid #ddd" }}>{job.location}</td>
-                  <td style={{ padding: "12px 20px", border: "1px solid #ddd", textAlign: "center" }}>
+                <tr key={job.id}>
+                  <td style={{ border: "1px solid #ddd", padding: "10px" }}>{job.title}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "10px" }}>{job.companyName}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "10px" }}>{job.location}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>
                     <button
-                      onClick={() => { setSelectedJob(job); setIsApplicant(false); }}
+                      onClick={() => {
+                        setSelectedJob(job);
+                        setIsApplicant(false);
+                      }}
                       style={{
-                        padding: "8px 15px",
+                        padding: "5px 10px",
                         marginRight: "5px",
                         backgroundColor: "#007bff",
                         color: "#fff",
                         border: "none",
-                        borderRadius: "5px",
+                        borderRadius: "3px",
                         cursor: "pointer",
-                        transition: "background-color 0.3s",
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#0056b3")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
                     >
                       View
                     </button>
                     <button
                       onClick={() => handleRejectJob(job.id)}
                       style={{
-                        padding: "8px 15px",
+                        padding: "5px 10px",
                         backgroundColor: "#ff4d4d",
                         color: "#fff",
                         border: "none",
-                        borderRadius: "5px",
+                        borderRadius: "3px",
                         cursor: "pointer",
-                        transition: "background-color 0.3s",
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#cc0000")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ff4d4d")}
                     >
                       Reject
                     </button>
@@ -978,114 +917,134 @@ const handleRejectUser = async (user) => {
               ))}
             </tbody>
           </table>
+
+
+          {/* Job Details Modal */}
+          {selectedJob && !isApplicant && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div
+                id="jobdetails"
+                style={{
+                  backgroundColor: "#fff",
+                  padding: "20px",
+                  borderRadius: "5px",
+                  maxWidth: "600px",
+                  width: "90%",
+                  maxHeight: "80%",
+                  overflowY: "auto",
+                }}
+              >
+                <h4>Job Details</h4>
+                <p>
+                  <strong>Title:</strong> {selectedJob.title}
+                </p>
+                <p>
+                  <strong>Company Name:</strong> {selectedJob.companyName}
+                </p>
+                <p>
+                  <strong>Location:</strong> {selectedJob.location}
+                </p>
+                <p>
+                  <strong>Description:</strong> {selectedJob.description || "No description provided."}
+                </p>
+                <button
+                  onClick={() => {
+                    handlePublishJob(selectedJob);
+                    setSelectedJob(null);
+                  }}
+                  style={{
+                    padding: "10px 20px",
+                    backgroundColor: "#28a745",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
+                >
+                  Publish
+                </button>
+                <button
+                  onClick={() => setSelectedJob(null)}
+                  style={{
+                    padding: "10px 20px",
+                    backgroundColor: "#6c757d",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+            
+          )}
         </div>
       )}
 
 
-      {/* Job Details Modal */}
-      {selectedJob && !isApplicant && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              padding: "30px",
-              borderRadius: "10px",
-              maxWidth: "600px",
-              width: "90%",
-              maxHeight: "80%",
-              overflowY: "auto",
-              boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <h4 style={{ textAlign: "center" }}>Job Details</h4>
-            <p><strong>Title:</strong> {selectedJob.title}</p>
-            <p><strong>Company Name:</strong> {selectedJob.companyName}</p>
-            <p><strong>Location:</strong> {selectedJob.location}</p>
-            <p><strong>Description:</strong> {selectedJob.description || "No description provided."}</p>
-
-            {/* Publish Button */}
-            <button
-              onClick={() => {
-                handlePublishJob(selectedJob);
-                setSelectedJob(null);
-              }}
-              style={{
-                marginTop: "20px",
-                padding: "12px 20px",
-                backgroundColor: "#28a745",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                fontWeight: "bold",
-                width: "100%",
-                transition: "background-color 0.3s",
-              }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#218838")}
-              onMouseLeave={(e) => (e.target.style.backgroundColor = "#28a745")}
-            >
-              Publish
-            </button>
-
-            {/* Close Button */}
-            <button
-              onClick={() => setSelectedJob(null)}
-              style={{
-                marginTop: "10px",
-                padding: "12px 20px",
-                backgroundColor: "#007bff",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                fontWeight: "bold",
-                width: "100%",
-                transition: "background-color 0.3s",
-              }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#0056b3")}
-              onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-        </div>
-        
-      {!showDeletedFiles && (
-        <div>
-            <h2>Users Pending Approval</h2>
-            <table>
+      {/* View User Acconts To Be Approve Section */}
+      {!showDeletedFiles && !isUserClassVisible && !selectedUserType && (
+        <div  style={{ border: "1px solid #ddd", borderRadius: "5px", padding: "20px", fontFamily: "Arial, sans-serif" }}>
+            <h3>Users Pending Approval</h3>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                     <tr>
-                        <th>Name/Company</th>
-                        <th>Email</th>
-                        <th>Type</th>
-                        <th>Actions</th>
+                        <th style={{ border: "1px solid #ddd", padding: "10px" }}>Name/Company</th>
+                        <th style={{ border: "1px solid #ddd", padding: "10px" }}>Email</th>
+                        <th style={{ border: "1px solid #ddd", padding: "10px" }}>Type</th>
+                        <th style={{ border: "1px solid #ddd", padding: "10px" }}>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {usersToApprove.map((user) => (
                         <tr key={user.id}>
-                            <td>{user.type === "applicant" ? user.name : user.companyName}</td>
-                            <td>{user.email}</td>
-                            <td>{user.type}</td>
-                            <td>
-                                <button onClick={() => handleApproveUser(user)}>Approve</button>
-                                <button onClick={() => handleRejectUser(user)}>Reject</button>
+                            <td style={{ border: "1px solid #ddd", padding: "10px" }}>{user.type === "applicant" ? user.name : user.companyName}</td>
+                            <td style={{ border: "1px solid #ddd", padding: "10px" }}>{user.email}</td>
+                            <td style={{ border: "1px solid #ddd", padding: "10px" }}>{user.type}</td>
+                            <td style={{ border: "1px solid #ddd", padding: "10px" }}>
+                                <button 
+                                  onClick={() => handleApproveUser(user)
+                                  }
+                                  style={{
+                                    padding: "5px 10px",
+                                    marginRight: "5px",
+                                    backgroundColor: "#007bff",
+                                    color: "#fff",
+                                    border: "none",
+                                    borderRadius: "3px",
+                                    cursor: "pointer",
+                                  }}
+                                  >Approve
+                                  </button>
+                                <button 
+                                  onClick={() => handleRejectUser(user)
+                                  }
+                                  style={{
+                                    padding: "5px 10px",
+                                    marginRight: "5px",
+                                    backgroundColor: "#ff4d4d",
+                                    color: "#fff",
+                                    border: "none",
+                                    borderRadius: "3px",
+                                    cursor: "pointer",
+                                  }}
+                                  >Reject
+                                  </button>
                             </td>
                         </tr>
                     ))}
@@ -1093,111 +1052,40 @@ const handleRejectUser = async (user) => {
             </table>
         </div>
     )}
-      {/* <div style={{ marginTop: "20px" }}>
-   
-</div> */}
-
-{showDeletedFiles && (
-  <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-    <h2 style={{ textAlign: "center", marginBottom: "20px", fontSize: "24px", color: "#333" }}>Deleted Files</h2>
-    <div
-      style={{
-        backgroundColor: "#f9f9f9",
-        padding: "20px",
-        borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          marginBottom: "20px",
-          backgroundColor: "#fff",
-          borderRadius: "8px",
-          overflow: "hidden",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <thead>
-          <tr>
-            <th
-              style={{
-                padding: "12px",
-                backgroundColor: "#007bff",
-                color: "#fff",
-                textAlign: "left",
-                fontSize: "16px",
-              }}
-            >
-              Name/Company
-            </th>
-            <th
-              style={{
-                padding: "12px",
-                backgroundColor: "#007bff",
-                color: "#fff",
-                textAlign: "left",
-                fontSize: "16px",
-              }}
-            >
-              Email
-            </th>
-            <th
-              style={{
-                padding: "12px",
-                backgroundColor: "#007bff",
-                color: "#fff",
-                textAlign: "left",
-                fontSize: "16px",
-              }}
-            >
-              Type
-            </th>
-            <th
-              style={{
-                padding: "12px",
-                backgroundColor: "#007bff",
-                color: "#fff",
-                textAlign: "left",
-                fontSize: "16px",
-              }}
-            >
-              Reason
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {deletedFiles.map((file) => (
-            <tr
-              key={file.id}
-              style={{
-                borderBottom: "1px solid #ddd",
-                backgroundColor: "#f9f9f9",
-                transition: "background-color 0.3s ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f1f1f1")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#f9f9f9")}
-            >
-              <td style={{ padding: "12px", fontSize: "14px" }}>
-                {file.type === "applicant" ? file.name : file.companyName}
-              </td>
-              <td style={{ padding: "12px", fontSize: "14px" }}>{file.email}</td>
-              <td style={{ padding: "12px", fontSize: "14px" }}>{file.type}</td>
-              <td style={{ padding: "12px", fontSize: "14px" }}>
-                {file.reason || "N/A"}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </div>
-)}
+    {/* Archives Section */}
+    {showDeletedFiles && !selectedUserType && !isUserClassVisible && (
+        <div  style={{ border: "1px solid #ddd", borderRadius: "5px", padding: "20px", fontFamily: "Arial, sans-serif" }}>
+            <h3>Deleted Files</h3>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                    <tr>
+                        <th style={{ border: "1px solid #ddd", padding: "10px" }}>Name/Company</th>
+                        <th style={{ border: "1px solid #ddd", padding: "10px" }}>Email</th>
+                        <th style={{ border: "1px solid #ddd", padding: "10px" }}>Type</th>
+                        <th style={{ border: "1px solid #ddd", padding: "10px" }}>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {deletedFiles.map((file) => (
+                        <tr key={file.id}>
+                            <td style={{ border: "1px solid #ddd", padding: "10px" }}>{file.type === "applicant" ? file.name : file.companyName}</td>
+                            <td style={{ border: "1px solid #ddd", padding: "10px" }}>{file.email}</td>
+                            <td style={{ border: "1px solid #ddd", padding: "10px" }}>{file.type}</td>
+                            <td style={{ border: "1px solid #ddd", padding: "10px" }}>{file.reason || "N/A"}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    )}
 
 
     </>
   );
 };
 
+
 export default AdminPage;
+
+
+
