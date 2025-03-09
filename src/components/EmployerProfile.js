@@ -148,7 +148,7 @@ const EmployerProfile = () => {
           ) : (
             <button className="edit-btn" onClick={handleEditClick}>Edit Profile</button>
           )}
-                    <h3>Jobs Posted</h3>
+                    <h3 style={{marginTop: "10px"}}>Jobs Posted</h3>
                     {jobPosts.length > 0 ? (
                         <ul className="job-list">
                             {jobPosts.map((job) => (
