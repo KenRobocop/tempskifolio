@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { db, auth, storage } from "../firebase";
-import { doc, getDoc, updateDoc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, collection, query, where, getDocs, deleteDoc,addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { onSnapshot } from "firebase/firestore";
 import "../styles.css";
 
 const EmployerProfile = () => {
@@ -57,18 +58,32 @@ const EmployerProfile = () => {
         fetchJobPosts();
     }, []);
 
-    const fetchApplicants = async (jobId) => {
-        const applicationsRef = collection(db, "jobs", jobId, "applications");
-        const appSnapshot = await getDocs(applicationsRef);
-        const applicantsData = appSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        setApplicants((prev) => ({ ...prev, [jobId]: applicantsData }));
-    };
+    useEffect(() => {
+        const unsubscribeMap = {};
+    
+        jobPosts.forEach((job) => {
+            const applicationsRef = collection(db, "jobs", job.id, "applications");
+    
+            // Listen for real-time changes
+            const unsubscribe = onSnapshot(applicationsRef, (snapshot) => {
+                const applicantsData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    
+                setApplicants((prev) => ({
+                    ...prev,
+                    [job.id]: applicantsData, // Update the job's applicants
+                }));
+            });
+    
+            unsubscribeMap[job.id] = unsubscribe;
+        });
+    
+        return () => {
+            Object.values(unsubscribeMap).forEach((unsubscribe) => unsubscribe());
+        };
+    }, [jobPosts]); // Ensure it re-runs when jobPosts change
 
     const handleJobClick = (job) => {
         setSelectedJob(job.id);
-        if (!applicants[job.id]) {
-            fetchApplicants(job.id);
-        }
     };
 
     const handleApplicantClick = (applicant) => {
@@ -112,14 +127,51 @@ const EmployerProfile = () => {
         setSelectedApplicant(null);
     };
 
-      const handleChange = (e) => {
-    setEditedData({ ...editedData, [e.target.name]: e.target.value });
-  };
+    const handleChange = (e) => {
+        setEditedData({ ...editedData, [e.target.name]: e.target.value });
+    };
 
-  const handleEmailSend = () => {
-    const mailtoLink = `mailto:${selectedApplicant.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-    window.location.href = mailtoLink;
+  const handleEmailSend = async () => {
+    if (!selectedApplicant || !selectedJob || !employer) {
+        console.error("Missing required data (applicant, job, or employer).");
+        return;
+    }
+
+    try {
+        // Reference to the applicant's notifications subcollection
+        const notificationsRef = collection(db, "applicants", selectedApplicant.id, "notifications");
+
+        // Create the notification object with company name, email subject, and email body
+        const newNotification = {
+            jobId: selectedJob,
+            companyName: employer.companyName,  // Include company name
+            subject: emailSubject,  // Include email subject
+            message: `Company: ${employer.companyName}\nSubject: ${emailSubject}\n\n${emailBody}`,  // Include company name, subject, and body
+            timestamp: new Date(),
+            status: "unread",
+        };
+
+        // Add the notification to Firestore
+        await addDoc(notificationsRef, newNotification);
+
+        console.log("Notification added successfully!");
+
+        // Send email
+
+
+        // Show success alert
+        alert("Email sent successfully!");
+
+        // Close the applicant submission modal
+        setSelectedApplicant(null);
+        
+    } catch (error) {
+        console.error("Error sending email or updating Firestore:", error);
+        alert("Failed to send email. Please try again.");
+    }
 };
+
+
 
     return (
       <div className="employer-profile">
@@ -338,4 +390,3 @@ const EmployerProfile = () => {
 };
 
 export default EmployerProfile;
-

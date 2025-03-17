@@ -190,6 +190,11 @@ const Navbar = ({ userType, onLogout }) => {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link className="nav-link" to="/discovered">
+                    Get Discovered
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link" to="/notifications">
                     Notifications
                   </Link>
@@ -206,6 +211,11 @@ const Navbar = ({ userType, onLogout }) => {
                 <li className="nav-item">
                   <Link className="nav-link" to="/employer/post-job">
                     Post Job
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/notifications">
+                      Notifications
                   </Link>
                 </li>
               </>
