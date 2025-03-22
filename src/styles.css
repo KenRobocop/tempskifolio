@@ -167,7 +167,7 @@ img{
     letter-spacing: 0.7px;
   }
   
-  .Roles button:hover {
+  /* .Roles button:hover {
     animation: rotate624 0.7s ease-in-out both;
   }
   
@@ -218,7 +218,7 @@ img{
     100% {
       transform: translate3d(0, 0, 0) translateZ(0);
     }
-  }
+  } */
 
 /** END OF CHANGED ROLES BUTTON CSS*/
   
@@ -645,7 +645,7 @@ nav a {
   }
   
   .navbar-nav .nav-link:hover {
-    color: #17252a !important;
+    color: #003e80 !important;
   }
   
   /* Mobile Specific Styles */
@@ -658,6 +658,59 @@ nav a {
     padding: 0; /* Remove padding for a cleaner look */
     cursor: pointer;
   }
+
+  .nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 15px; /* Add horizontal spacing between items */
+  }
+  
+  .nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s ease;
+    padding: 10px;
+    position: relative;
+  }
+  
+  .nav-link svg {
+    font-size: 1.5rem; /* Icon size */
+    transition: transform 0.3s ease;
+  }
+  
+  /* Hidden text below the icon by default */
+  .nav-link span {
+    position: absolute;
+    bottom: -25px; /* Ensures text starts below the icon */
+    left: 50%; /* Align text to the center */
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    font-size: 0.9rem;
+    color: #000000;
+    pointer-events: none; /* Prevent interaction when hidden */
+    white-space: nowrap; /* Prevent text from wrapping */
+  }
+  
+  /* Hover effects */
+  .nav-link:hover {
+    color: #007bff; /* Change color on hover */
+  }
+  
+  .nav-link:hover svg {
+    transform: translateY(-5px); /* Icon moves up slightly */
+  }
+  
+  .nav-link:hover span {
+    opacity: 1;
+    transform: translate(-50%, -5px); /* Moves up while staying centered */
+  }
+  
+  
 
   /** END OF CHANGED NAVBAR CSS*/
 
@@ -788,6 +841,7 @@ nav a {
     gap: 20px;
     justify-content: center;
     margin-top: 20px;
+    
 }
 
 .submission-card {
@@ -1297,7 +1351,7 @@ tr:nth-child(even) {
 }
 
 /* Primary Button */
-.primary-btn {
+.primary-button {
   background-color: #007bff;
   color: white;
   border: none;
@@ -1307,14 +1361,14 @@ tr:nth-child(even) {
   transition: background 0.3s ease-in-out;
 }
 
-.primary-btn:hover {
+.primary-button:hover {
   background-color: #0056b3;
 }
 
 /* Submissions Grid */
 .submissions-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Change this line to make it a 3-column grid */
+  grid-template-columns: repeat(4, 1fr); /* Now 4 columns */
   gap: 20px;
   margin-top: 20px;
 }
@@ -1409,7 +1463,7 @@ tr:nth-child(even) {
   justify-content: center;
   align-items: center;
   animation: fadeIn 0.3s ease-in-out;
-  z-index: 0;
+  z-index: 1000; /* Ensure it's above all other elements */
 }
 
 .portfolio-modal-content {
@@ -1421,6 +1475,7 @@ tr:nth-child(even) {
   width: 100%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.3s ease-in-out;
+  z-index: 0;
 }
 
 /* Modal Actions */
@@ -1428,6 +1483,7 @@ tr:nth-child(even) {
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
+  z-index: 0;
 }
 
 /* Secondary Button */
@@ -1502,8 +1558,29 @@ tr:nth-child(even) {
 /* General container for the notification page */
 .notification-page {
   background-color: #fff;
-  width: 80%;
-  margin: 50px auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;   /* Keep it at the top */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+/* Main container to center at the top */
+.notification-container {
+  display: flex;
+  justify-content: center;      /* Center horizontally */
+  align-items: flex-start;      /* Align at the top */
+  min-height: 100vh;            /* Full height */
+  padding-top: 80px;            /* Add sufficient space from the top */
+  box-sizing: border-box;
+}
+
+/* Main notification page container */
+.notification-page {
+  background-color: #fff;
+  width: 90%;
+  max-width: 1000px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 30px;
@@ -1511,18 +1588,19 @@ tr:nth-child(even) {
 
 /* Heading for the notifications page */
 .notification-page h2 {
-  text-align: center;
   font-size: 2em;
   color: #333;
   margin-bottom: 20px;
   font-weight: 600;
+  text-align: center;
 }
 
 /* Tabs for switching between notification types */
 .tabs {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px;
+  gap: 10px;
+  margin-bottom: 20px;
   border-bottom: 2px solid #ccc;
 }
 
@@ -1551,7 +1629,7 @@ tr:nth-child(even) {
 
 /* Notification content container */
 .notification-content {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 /* List styling for notifications */
@@ -1572,33 +1650,63 @@ tr:nth-child(even) {
 
 .notification-item:hover {
   background-color: #f9f9f9;
-  transform: scale(1.02);
+  transform: translateY(-2px);
 }
 
-.notification-item a {
-  text-decoration: none;
-  color: #333;
-  font-size: 1.1em;
-  font-weight: 500;
-  display: block;
+.unread {
+  border-left: 5px solid #007bff;
+  background: #d0e7ff; /* Light blue for unread */
 }
 
-.notification-item a:hover {
-  color: #4ad4d4;
+.read {
+  border-left: 5px solid #28a745;
+  background: #e0ffe0; /* Light green for read */
 }
 
-/* No notifications message */
-.notification-content li {
+.badge {
+  background: #ff4d4d;
+  color: white;
+  padding: 3px 8px;
+  font-size: 0.9em;
+  border-radius: 12px;
+  margin-left: 10px;
+}
+
+/* Empty state message */
+.empty {
   text-align: center;
   color: #777;
   font-size: 1.1em;
   font-style: italic;
 }
 
-/* For empty state */
+/* Timestamps */
+.timestamp {
+  font-size: 0.9em;
+  color: #777;
+  margin-top: 5px;
+}
+
+/* Notification details */
+.notif-details {
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background: #c1eff5;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.notif-details p {
+  margin: 5px 0;
+}
+
+/* Empty state */
 .notification-content li.empty {
-  color: #999;
-  font-size: 1em;
+  color: #777;
+  font-size: 1.1em;
+  font-style: italic;
+  text-align: center;
 }
 
 /*START EMPLOYER PROFILE CHANGE*/
@@ -1676,7 +1784,6 @@ tr:nth-child(even) {
   margin: 5px 0;
   color: #666;
 }
-
 .edit-btn, .save-btn {
   padding: 10px 15px;
   border: none;

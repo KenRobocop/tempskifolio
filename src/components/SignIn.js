@@ -68,7 +68,7 @@ const SignIn = () => {
         <div className='hero' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <div className='choicecontainer' style={{ textAlign: 'center', width: '100%', maxWidth: '400px' }}>
                 <form onSubmit={handleSignIn} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '100px' }}>
-                    <h2 style={{ fontFamily: "Times New Roman" }}>Sign In</h2>
+                    <h2 style={{ fontFamily: "Times New Roman" }}>Log In</h2>
                     <input
                         id='email'
                         className='input'
@@ -107,7 +107,7 @@ const SignIn = () => {
                             {showPassword ? 'Hide' : 'Show'}
                         </button>
                     </div>
-                    <button className="input submit" type="submit">Sign In</button>
+                    <button className="input submit" type="submit">Log In</button>
                     <p onClick={handleForgotPassword} style={{ marginTop: '10px', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Forgot Password?</p>
                 </form>
             </div>

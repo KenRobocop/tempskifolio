@@ -122,24 +122,24 @@
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FaUser, FaBriefcase, FaSearch, FaFileAlt, FaEye, FaBell, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles.css"; // Custom CSS for burger effect
+import "../styles.css"; // Custom CSS
 
 const Navbar = ({ userType, onLogout }) => {
-  const [isMobile, setIsMobile] = useState(false); // Track viewport size
-  const [isNavOpen, setIsNavOpen] = useState(false); // Track menu open/close
+  const [isMobile, setIsMobile] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 992); // Bootstrap lg breakpoint
+      setIsMobile(window.innerWidth <= 992);
       if (window.innerWidth > 992) {
-        setIsNavOpen(false); // Reset menu on large screens
+        setIsNavOpen(false);
       }
     };
 
-    handleResize(); // Set initial state
+    handleResize();
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -152,7 +152,6 @@ const Navbar = ({ userType, onLogout }) => {
           Ski-Folio
         </Link>
 
-        {/* Burger Icon (Mobile Only) */}
         <button
           className={`navbar-toggler ${isNavOpen ? "open" : ""}`}
           type="button"
@@ -165,7 +164,6 @@ const Navbar = ({ userType, onLogout }) => {
           </div>
         </button>
 
-        {/* Navbar Links (Always Visible on Large Screens) */}
         <div
           className={`navbar-collapse ${
             isMobile ? (isNavOpen ? "show" : "hide") : "d-lg-flex"
@@ -176,27 +174,32 @@ const Navbar = ({ userType, onLogout }) => {
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/applicant/profile">
-                    Profile
+                    <FaUser />
+                    <span>Profile</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/applicant/search-jobs">
-                    Search Jobs
+                    <FaSearch />
+                    <span>Search Jobs</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/portfolio">
-                    Portfolio
+                    <FaFileAlt />
+                    <span>Portfolio</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/discovered">
-                    Get Discovered
+                    <FaEye />
+                    <span>Get Discovered</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/notifications">
-                    Notifications
+                    <FaBell />
+                    <span>Notifications</span>
                   </Link>
                 </li>
               </>
@@ -205,24 +208,28 @@ const Navbar = ({ userType, onLogout }) => {
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/employer/profile">
-                    Profile
+                    <FaUser />
+                    <span>Profile</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/employer/post-job">
-                    Post Job
+                    <FaPlus />
+                    <span>Post Job</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/notifications">
-                      Notifications
+                    <FaBell />
+                    <span>Notifications</span>
                   </Link>
                 </li>
               </>
             )}
             <li className="nav-item">
               <Link className="nav-link" to="/" onClick={onLogout}>
-                Logout
+                <FaSignOutAlt />
+                <span>Logout</span>
               </Link>
             </li>
           </ul>

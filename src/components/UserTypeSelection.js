@@ -33,8 +33,8 @@ const Home = ({ setUserType }) => {
         <div className='hero'>
             <div className='Home'>
                 <div className='choicecontainer'>
-                    <h1 style={{fontFamily: "Times New Roman", color: "#000000",fontSize:"4rem"}}>Ski-Folio</h1>
-                    <p style={{fontFamily: "Times New Roman", color: "#000000", fontSize:"1.2rem"}}>A website for our young and new frontend web developers</p>
+                    <h1 style={{fontFamily: "Times New Roman", color: "#ffffff",fontSize:"4rem"}}>Ski-Folio</h1>
+                    <p style={{fontFamily: "Times New Roman", color: "#ffffff", fontSize:"1.2rem"}}>A website for our young and new frontend web developers</p>
                     {!roleSelected ? (
                         <>
                             <div className='Roles'>
@@ -49,7 +49,7 @@ const Home = ({ setUserType }) => {
                     ) : (
                         <div className='Home1'>
                             <Link to="/signin">
-                                <button className="input submit">Sign In</button>
+                                <button className="input submit">Log In</button>
                             </Link>
                             <Link to="/signup">
                                 <button className="input submit">Sign Up</button>

@@ -119,10 +119,13 @@ const EmployerProfile = () => {
     };
 
     const handleDeleteJob = async (jobId) => {
-        await deleteDoc(doc(db, "jobs", jobId));
-        setJobPosts((prev) => prev.filter((job) => job.id !== jobId));
+        const confirmDelete = window.confirm("Are you sure you want to delete this job post?");
+        if (confirmDelete) {
+            await deleteDoc(doc(db, "jobs", jobId));
+            setJobPosts((prev) => prev.filter((job) => job.id !== jobId));
+            alert("Job post deleted successfully!");
+        }
     };
-
     const handleCloseApplicantModal = () => {
         setSelectedApplicant(null);
     };
@@ -146,7 +149,7 @@ const EmployerProfile = () => {
             jobId: selectedJob,
             companyName: employer.companyName,  // Include company name
             subject: emailSubject,  // Include email subject
-            message: `Company: ${employer.companyName}\nSubject: ${emailSubject}\n\n${emailBody}`,  // Include company name, subject, and body
+            message: emailBody,  // Include company name, subject, and body
             timestamp: new Date(),
             status: "unread",
         };
@@ -242,7 +245,7 @@ const EmployerProfile = () => {
                                             </div>
                                         </div>
                                     )}
-                                    <button id="Delete" onClick={() => handleDeleteJob(job.id)}>Delete</button>
+                                    <button id="Delete" onClick={() => handleDeleteJob(job.id)}>Remove</button>
                                 </li>
                             ))}
                         </ul>

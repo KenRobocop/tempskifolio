@@ -36,8 +36,23 @@ const Portfolio = () => {
 
     const fetchUserRepos = async (githubLink) => {
         if (!githubLink) return;
-        
-        const username = githubLink.split('/').pop();
+    
+        let username = "";
+    
+        // Extract username from GitHub profile link (e.g., https://github.com/crajex)
+        if (githubLink.includes("github.com")) {
+            username = githubLink.split('/').pop();
+        }
+        // Extract username from GitHub Pages link (e.g., https://crajex.github.io/NewJeans)
+        else if (githubLink.includes(".github.io")) {
+            username = new URL(githubLink).hostname.split('.')[0];
+        }
+    
+        if (!username) {
+            setError("Invalid GitHub link format.");
+            return;
+        }
+    
         try {
             const response = await axios.get(`https://api.github.com/users/${username}/repos`);
             setUserRepos(response.data.map(repo => repo.name));
@@ -118,20 +133,23 @@ const Portfolio = () => {
 
         // Extract repo name from GitHub URL if applicable
         let belongsToUser = true;
-        if (liveDemoLink.includes('github.com')) {
-            const urlParts = liveDemoLink.split('/');
-            const repoIndex = urlParts.indexOf('github.com') + 2;
+        if (liveDemoLink.includes('github.com') || liveDemoLink.includes('.github.io')) {
+            let repoName = "";
             
-            if (repoIndex < urlParts.length) {
-                const repoName = urlParts[repoIndex].replace('.git', '');
-                
-                // Only validate GitHub repo ownership if we're dealing with a GitHub URL
-                if (!userRepos.includes(repoName)) {
-                    if (window.confirm("This repository doesn't appear to belong to your GitHub account. Do you want to continue anyway?")) {
-                        belongsToUser = true;
-                    } else {
-                        return;
-                    }
+            if (liveDemoLink.includes("github.com")) {
+                const urlParts = liveDemoLink.split('/');
+                const repoIndex = urlParts.indexOf('github.com') + 2;
+                if (repoIndex < urlParts.length) repoName = urlParts[repoIndex].replace('.git', '');
+            } else if (liveDemoLink.includes(".github.io")) {
+                repoName = new URL(liveDemoLink).pathname.split('/')[1]; // Extract repo from GitHub Pages URL
+            }
+        
+            if (!userRepos.includes(repoName)) 
+                alert("Error Repository not Initialized");
+                return;{
+                if (!window.confirm("This repository doesn't appear to belong to your GitHub account. Do you want to continue?")) {
+                    alert("Error repo not owned");
+                    return;
                 }
             }
         }
@@ -200,39 +218,40 @@ const Portfolio = () => {
     };
 
     return (
-        <div style={{ padding: '20px' }} id='portfolio'>
-            <h3>Portfolio</h3>
+        <div className="portfolio-container">
+            <h3 className="section-title">Portfolio</h3>
             {userData && (
-                <p>
-                    GitHub: <a href={userData.githubLink} target="_blank" rel="noopener noreferrer">{userData.githubLink}</a>
-                </p>
+                <div className="github-link">
+                    <p>
+                        GitHub: <a href={userData.githubLink} target="_blank" rel="noopener noreferrer">{userData.githubLink}</a>
+                    </p>
+                </div>
             )}
 
-            <div className="submission-form">
+            <div className="form-group">
                 <input
                     type="text"
-                    placeholder="Enter Live Demo Link (website or GitHub repo)"
+                    placeholder="Enter Live Demo Link"
                     value={liveDemoLink}
                     onChange={(e) => setLiveDemoLink(e.target.value)}
-                    className="demo-link-input"
                 />
-                <button onClick={handleOpenModal} className="submit-button">Submit</button>
+                <button className="primary-button" onClick={handleOpenModal}>Submit</button>
             </div>
 
             {error && <div className="error-message">{error}</div>}
 
             {showModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
+                <div className="portfolio-modal-overlay">
+                    <div className="portfolio-modal-content">
                         <h4>Upload Demo Video</h4>
                         <p className="modal-instruction">Please upload a short video demonstrating your projects.</p>
                         <input type="file" accept="video/*" onChange={handleFileChange} />
-                        <div className="modal-actions">
-                            <button onClick={handleCloseModal}>Cancel</button>
+                        <div className="portfolio-modal-actions">
+                            <button className="secondary-btn" onClick={handleCloseModal}>Cancel</button>
                             <button
                                 disabled={!isVideoValid || submissionLoading}
                                 onClick={handleSubmission}
-                                className="submit-button"
+                                className="primary-button"
                             >
                                 {submissionLoading ? "Submitting..." : "Submit"}
                             </button>
@@ -244,7 +263,7 @@ const Portfolio = () => {
             {loading ? (
                 <p>Loading submissions...</p>
             ) : (
-                <div className="submissions-container">
+                <div className="submissions-grid">
                     {submissions.length === 0 ? (
                         <p>No submissions yet. Submit your first project!</p>
                     ) : (
@@ -264,7 +283,7 @@ const Portfolio = () => {
                                     <source src={submission.demoVideoLink} type="video/mp4" />
                                     Your browser does not support the video tag.
                                 </video>
-                                <div className="scores-section">
+                                <div className="scores">
                                     <p>Scores:</p>
                                     <ul>
                                         <li>HTML: <span className="score">{submission.scores.html}</span></li>
@@ -272,12 +291,8 @@ const Portfolio = () => {
                                         <li>JavaScript: <span className="score">{submission.scores.javascript}</span></li>
                                     </ul>
                                 </div>
-                                <button 
-                                    onClick={() => handleDeleteSubmission(submission.id)}
-                                    className="delete-button"
-                                >
-                                    Delete
-                                </button>
+                                <button className="delete-btn" onClick={() => handleDeleteSubmission(submission.id)}>Delete</button>
+                        
                             </div>
                         ))
                     )}
