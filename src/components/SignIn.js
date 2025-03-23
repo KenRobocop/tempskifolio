@@ -71,7 +71,7 @@ const SignIn = () => {
                     <h2 style={{ fontFamily: "Times New Roman" }}>Log In</h2>
                     <input
                         id='email'
-                        className='input'
+                        className='inputs'
                         type="email"
                         placeholder="Email"
                         value={email}
@@ -81,7 +81,7 @@ const SignIn = () => {
                     />
                     <div style={{ position: 'relative', width: '100%', marginBottom: '10px' }}>
                         <input
-                            className='input'
+                            className='inputs'
                             id='password'
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
@@ -107,7 +107,7 @@ const SignIn = () => {
                             {showPassword ? 'Hide' : 'Show'}
                         </button>
                     </div>
-                    <button className="input submit" type="submit">Log In</button>
+                    <button className="input-submit" type="submit">Log In</button>
                     <p onClick={handleForgotPassword} style={{ marginTop: '10px', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Forgot Password?</p>
                 </form>
             </div>

@@ -49,12 +49,12 @@ const Home = ({ setUserType }) => {
                     ) : (
                         <div className='Home1'>
                             <Link to="/signin">
-                                <button className="input submit">Log In</button>
+                                <button className="submit">Log In</button>
                             </Link>
                             <Link to="/signup">
-                                <button className="input submit">Sign Up</button>
+                                <button className="submit">Sign Up</button>
                             </Link>
-                            <button className="input submit" onClick={handleChangeRole}>Change Role</button>
+                            <button className="submit" onClick={handleChangeRole}>Change Role</button>
                         </div>
                     )}
                 </div>

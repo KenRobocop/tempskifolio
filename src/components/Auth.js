@@ -937,10 +937,10 @@ const Auth = ({ userType, setUser }) => {
                 <form onSubmit={handleSubmit} id="formauth" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <h2 style={{ fontFamily: "times new roman" }}>{isSignUp ? 'Sign Up' : 'Sign In'} as {userType}</h2>
 
-                    <input className="input" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required style={{ marginBottom: '10px', width: '100%' }} />
+                    <input className="inputs" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required style={{ marginBottom: '10px', width: '100%' }} />
                     
                     <div style={{ position: 'relative', width: '100%', marginBottom: '10px',  display: "flex", flexDirection: "column", alignItems: "center" }}>
-                        <input className="input" type={showPassword ? 'text' : 'password'} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required style={{ width: '100%' }} />
+                        <input className="inputs" type={showPassword ? 'text' : 'password'} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required style={{ width: '100%' }} />
                         <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'black' }}>
                             {showPassword ? 'Hide' : 'Show'}
                         </button>
@@ -948,15 +948,15 @@ const Auth = ({ userType, setUser }) => {
 
                     {isSignUp && userType === 'applicant' && (
                         <>
-                            <input className="input" type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required style={{ marginBottom: '10px', width: '100%' }} />
-                            <input className="input" type="text" placeholder="GitHub Link" value={githubLink} onChange={(e) => setGithubLink(e.target.value)} required style={{ marginBottom: '10px', width: '100%' }} />
+                            <input className="inputs" type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required style={{ marginBottom: '10px', width: '100%' }} />
+                            <input className="inputs" type="text" placeholder="GitHub Link" value={githubLink} onChange={(e) => setGithubLink(e.target.value)} required style={{ marginBottom: '10px', width: '100%' }} />
                         </>
                     )}
 
                     {isSignUp && userType === 'employer' && (
                         <>
-                            <input className="input" type="text" placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} required style={{ marginBottom: '10px', width: '100%' }} />
-                            <input className="input" type="file" accept=".pdf,.jpg,.png" onChange={(e) => setBusinessPermit(e.target.files[0])} required style={{ marginBottom: '10px', width: '100%' }} />
+                            <input className="inputs" type="text" placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} required style={{ marginBottom: '10px', width: '100%' }} />
+                            <input className="inputs" type="file" accept=".pdf,.jpg,.png" onChange={(e) => setBusinessPermit(e.target.files[0])} required style={{ marginBottom: '10px', width: '100%' }} />
                         </>
                     )}
 
