@@ -16,6 +16,7 @@ import Portfolio from './components/Portfolio';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AdminPage from './components/AdminPage';
 import NotificationPanel from './components/Notifications';
+import Homepage from './components/Homepage';
 
 const App = () => {
     const [userType, setUserType] = useState(null);
@@ -42,7 +43,8 @@ const App = () => {
         <Router>
             {user && <Navbar userType={userType} onLogout={handleLogout} />}
             <Routes>
-                <Route path="/" element={<UserTypeSelection setUserType={setUserType} />} /> {/* Entry point */}
+                <Route path="/" element={<Homepage />} />
+                <Route path="/select" element={<UserTypeSelection setUserType={setUserType} />} /> {/* Entry point */}
                 <Route path="/signin" element={<SignIn userType={userType} />} />
                 <Route path="/signup" element={<Auth userType={userType} setUser={setUser} />} />
                 <Route path="/applicant/profile" element={<ApplicantProfile />} />
