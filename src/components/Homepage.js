@@ -10,15 +10,15 @@ const Homepage = () => {
       <header className="top-header">
         <h1 className="site-logo">Ski-Folio</h1>
 
-        <div className="action-btns">
+        {/* <div className="action-btns">
           <Link to="/select">
             <button className="main-btn">Get Started</button>
           </Link>
-        </div>
+        </div> */}
       </header>
 
       {/* Hero Section */}
-      <main className="hero-section">
+      <main className="hero-section1">
         <h2 className="hero-title">Welcome to Ski-Folio</h2>
         <p className="hero-description">
           Your personalized platform for finding jobs and building your professional portfolio. 
