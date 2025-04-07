@@ -927,13 +927,13 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
   /* Hidden text below the icon by default */
   .nav-link span {
     position: absolute;
-    bottom: -25px; /* Ensures text starts below the icon */
+    bottom: -15px; /* Ensures text starts below the icon */
     left: 50%; /* Align text to the center */
     transform: translateX(-50%);
     opacity: 0;
     transition: opacity 0.3s, transform 0.3s;
     font-size: 0.9rem;
-    color: #000000;
+    color: #ffffff;
     pointer-events: none; /* Prevent interaction when hidden */
     white-space: nowrap; /* Prevent text from wrapping */
   }
@@ -2575,3 +2575,6 @@ background-size: cover;
 
 
 /*END OF ABOUT US CSS*/
+.navspan{
+  color: white;
+}
