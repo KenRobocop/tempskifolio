@@ -114,32 +114,36 @@ const ApplicantProfile = () => {
 
     const handleDelete = async (type, skill, url) => {
         try {
-            // Archive the file before deletion
-            await archiveFile(type, skill, url);
-
-            const storageRef = ref(storage, url);
-            await deleteObject(storageRef);
-
-            if (type === 'resume') {
-                await updateDoc(doc(db, 'applicants', auth.currentUser.uid), { resumeURL: '' });
-                setResumeURL('');
-            } else if (type === 'certificate') {
-                const updatedCertifications = certifications[skill].filter((cert) => cert !== url);
-                setCertifications((prev) => ({
-                    ...prev,
-                    [skill]: updatedCertifications,
-                }));
-                await updateDoc(doc(db, 'applicants', auth.currentUser.uid), {
-                    certifications: {
-                        ...certifications,
-                        [skill]: updatedCertifications,
-                    },
-                });
-            }
+          // Archive the file before deletion
+          await archiveFile(type, skill, url);
+      
+          const storageRef = ref(storage, url);
+          await deleteObject(storageRef);
+      
+          if (type === 'resume') {
+            await updateDoc(doc(db, 'applicants', auth.currentUser.uid), { resumeURL: '' });
+            setResumeURL('');
+          } else if (type === 'certificate') {
+            const updatedCertifications = certifications[skill].filter((cert) => cert !== url);
+      
+            setCertifications((prev) => ({
+              ...prev,
+              [skill]: updatedCertifications,
+            }));
+      
+            // Update Firestore with the new certifications list, ensuring "Others" is handled
+            await updateDoc(doc(db, 'applicants', auth.currentUser.uid), {
+              certifications: {
+                ...certifications,
+                [skill]: updatedCertifications,
+              },
+            });
+          }
         } catch (error) {
-            console.error("Error deleting file:", error);
+          console.error("Error deleting file:", error);
         }
-    };
+      };
+      
 
     return (
         <div id='applicant'>
@@ -191,24 +195,25 @@ const ApplicantProfile = () => {
                 </div>
             </div>
              {/* Badges */}
-             <div style={{ marginTop: '20px', display: 'flex', gap: '10px',marginLeft: "10px" }}>
+                <div style={{ marginTop: '20px', display: 'flex', gap: '10px', marginLeft: "10px" }}>
                 {Object.keys(certifications).map((skill) =>
-                    skill !== "Others" && certifications[skill]?.length > 0 ? ( // Exclude "Others"
-                        <span
-                            key={skill}
-                            style={{
-                                backgroundColor: '#007bff',
-                                color: 'white',
-                                padding: '5px 10px',
-                                borderRadius: '5px',
-                                fontSize: '12px',
-                            }}
-                        >
-                            {skill} Certified
-                        </span>
+                    certifications[skill]?.length > 0 ? ( // Include "Others" as well
+                    <span
+                        key={skill}
+                        style={{
+                        backgroundColor: '#007bff',
+                        color: 'white',
+                        padding: '5px 10px',
+                        borderRadius: '5px',
+                        fontSize: '12px',
+                        }}
+                    >
+                        {skill} Certified
+                    </span>
                     ) : null
                 )}
-            </div>
+                </div>
+
             {/*START CHANGED PROFILE* */}
                     {/* Resume Section */}
                     <div style={{
@@ -396,7 +401,22 @@ const ApplicantProfile = () => {
                                         ))}
                                     </div>
                                 ) : (
-                                    <p>No certificates for {skill}</p>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        minHeight: '60px',
+                                    }}>
+                                        <p style={{
+                                            fontSize: '16px',
+                                            color: '#777',
+                                            textAlign: 'center',
+                                            fontStyle: 'italic',
+                                            margin: 0
+                                        }}>
+                                            No certificates for {skill}
+                                        </p>
+                                    </div>
                                 )}
                             </div>
                 ))}
