@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
-
+import { Link} from 'react-router-dom'; // Use useNavigate from react-router-dom v6
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -108,6 +108,9 @@ const SignIn = () => {
                         </button>
                     </div>
                     <button className="input-submit" type="submit">Log In</button>
+                    <Link to="/select">
+                                <button className="submit">Cancel</button>
+                    </Link>
                     <p onClick={handleForgotPassword} style={{ marginTop: '10px', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Forgot Password?</p>
                 </form>
             </div>

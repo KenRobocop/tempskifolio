@@ -807,7 +807,7 @@
 
 import React, { useState } from 'react';
 import { auth, db, storage } from '../firebase';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
@@ -968,9 +968,11 @@ const Auth = ({ userType, setUser }) => {
                             </label>
                         </div>
                     )}
-
+                    
                     <button type="submit" className="input submit">{isSignUp ? 'Sign Up' : 'Sign In'}</button>
-
+                    <Link to="/select">
+                                                    <button className="submit">Cancel</button>
+                    </Link>
                     {!isSignUp && (
                         <button type="button" onClick={handleForgotPassword} style={{ background: 'none', border: 'none', color: 'blue', cursor: 'pointer', marginTop: '10px' ,}}>
                             Forgot Password?
