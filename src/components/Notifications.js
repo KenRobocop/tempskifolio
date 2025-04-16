@@ -1007,7 +1007,7 @@
 
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../firebase";
-import { collection, getDocs, doc, query, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, query, updateDoc,getDoc } from "firebase/firestore";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles.css";
 
@@ -1030,38 +1030,32 @@ const NotificationPanel = () => {
         const applicantDoc = doc(db, "applicants", uid);
         const employerDoc = doc(db, "employers", uid);
   
-        const [applicantSnap, employerSnap] = await Promise.all([
-          getDocs(collection(applicantDoc, "notifications")),
-          getDocs(collection(employerDoc, "notifications")), // Now using the notifications subcollection for employers
-        ]);
-  
-        const isEmployer = employerSnap.size > 0 || (await getDocs(employerDoc)).exists;
+        const employerDocSnap = await getDoc(employerDoc);
+        const isEmployer = employerDocSnap.exists();
         setUserType(isEmployer ? "employer" : "applicant");
   
-        let applicationNotifications = [];
+        const notificationSnap = await getDocs(
+          collection(isEmployer ? employerDoc : applicantDoc, "notifications")
+        );
+        const applicationNotifications = notificationSnap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
   
-        if (!isEmployer) {
-          // Only fetch application notifications for applicants
-          applicationNotifications = applicantSnap.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-        } else {
-          // EMPLOYER: Fetch notifications from the employer's notifications subcollection
-          applicationNotifications = employerSnap.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-        }
-  
+        // Get all announcements
         const announcementSnapshot = await getDocs(collection(db, "announcement"));
-        const relevantAnnouncements = announcementSnapshot.docs
-          .map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
-          .filter((doc) => doc.recipientType === (isEmployer ? "employer" : "applicant"));
+        const allAnnouncements = announcementSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          status: doc.data().status || "unread", // default in case missing
+        }));
   
+        // ✅ Only keep announcements for the current user type
+        const relevantAnnouncements = allAnnouncements.filter(
+          (doc) => doc.recipientType === (isEmployer ? "employer" : "applicant")
+        );
+  
+        // Set notifications
         setNotifications({
           application: applicationNotifications.sort(
             (a, b) => b.timestamp?.toDate() - a.timestamp?.toDate()

@@ -760,7 +760,7 @@ const handleRejectUser = async (user) => {
 
 
         {/* History Button */}
-        <button
+        {/* <button
           onClick={() => {
             setHistoryVisible(true);
             setShowDeletedFiles(false);
@@ -780,7 +780,7 @@ const handleRejectUser = async (user) => {
           }}
         >
           History
-        </button>
+        </button> */}
 
 
         {/* Announcement Button */}
@@ -1323,7 +1323,7 @@ const handleRejectUser = async (user) => {
     )}
 
 
-{historyVisible && !isUserApproval && !showDeletedFiles && !selectedUserType && !isUserClassVisible && !announcementVisible && (
+{/* {historyVisible && !isUserApproval && !showDeletedFiles && !selectedUserType && !isUserClassVisible && !announcementVisible && (
         <div style={{  border: "1px solid #ddd", borderRadius: "5px", padding: "20px" }}>
           <h3>History</h3>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -1345,7 +1345,7 @@ const handleRejectUser = async (user) => {
             </tbody>
           </table>
         </div>
-      )}
+      )} */}
 
 
       {/* Announcement tab */}
